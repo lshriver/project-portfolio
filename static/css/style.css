@@ -19,7 +19,7 @@
     --purple2: #5e17eb;
     --gradient-light-to-dark-blue:
         linear-gradient(
-            to right bottom, var(--cyan), var(--blue5)
+            to right bottom, var(--blue1), var(--blue5)
         ); 
     --gradient-blue-to-purple:
         linear-gradient(
