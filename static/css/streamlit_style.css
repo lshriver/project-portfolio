@@ -74,6 +74,17 @@
     text-align: left;
 }
 
+/* Header 2 Sidebar Styling */
+.sidebar h2, .sidebar h2 span {
+    background: var(--gradient-light-to-dark-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* Header 3 Sidebar Styling */
 .sidebar h3, .sidebar h3 span {
     background: var(--gradient-light-to-dark-blue);
@@ -82,7 +93,7 @@
     -webkit-text-fill-color: transparent;
     color: transparent;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
 }
 
 /* Slider styling for the active (colored) part */

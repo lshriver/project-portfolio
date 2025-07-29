@@ -33,3 +33,13 @@ def apply_background(image_path: str):
             }}
             </style>
         """, unsafe_allow_html=True)
+
+def load_footer(path: str = "templates/footer.html"):
+    """Read footer.html and render it at the bottom of the Streamlit app."""
+    footer_file = Path(path)
+    if not footer_file.exists():
+        st.error(f"Footer file not found: {path}")
+        return
+    html = footer_file.read_text(encoding="utf-8")
+    # unsafe_allow_html=True is required to keep our <style> and <div>
+    st.markdown(html, unsafe_allow_html=True)
