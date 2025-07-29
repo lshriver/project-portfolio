@@ -1,1 +1,219 @@
-/* Custom site-wide sytling */
+/* Custom site-wide streamlit sytling */
+ @import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
+
+:root {
+    --lime_green: #ccff33; 
+    --light_green: #9ef01a;
+    --green1: #70e000;
+    --green2: #38bb00;
+    --green3: #008000;
+    --green4: #007200;
+    --jade_green: #22f793;
+    --cyan: #00ffee;
+    --blue1: #00e8ff;
+    --blue2: #14b5ff;
+    --blue3:#27aaff;
+    --blue4: #3a98ff;
+    --blue5: #0070eb;
+    --purple1: #7066ff;
+    --purple2: #5e17eb;
+    --gradient-light-to-dark-blue:
+        linear-gradient(
+            to right bottom, var(--cyan), var(--blue5)
+        ); 
+    --gradient-blue-to-purple:
+        linear-gradient(
+            to right bottom, var(--cyan), var(--purple2)
+        );
+}
+
+* {
+    font-family: 'Aclonica', sans-serif !important;
+    box-sizing: border-box;
+    transition: all 0.4s ease-in-out;
+}
+
+html, body, [class*=css] {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image: url('static/images/wisp.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.gradient_text1 {
+    display: inline-block;
+    font-weight: bold !important;
+    background-image: var(--gradient-light-to-dark-blue) !important;
+    -webkit-background-clip: text;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent;
+}
+
+.gradient_text2 {
+    display: inline-block;
+    font-weight: bold;
+    background-image: var(--gradient-blue-to-purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Add semi-transparent overlay for better content visibility */
+.main::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1;
+}
+
+/* Section styles */
+.section {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255. 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s eas;
+    backdrop-filter: blur(5px);
+}
+
+.section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.section-content {
+    color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    text-align: left;
+    align-items: flex-start;
+    padding: 15px
+}
+
+.section h2 {
+    font-weight: bold;
+    background: var(--gradient-light-to-dark-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-top: 0;
+    font-size: 1.8rem;
+    width: 100%;
+    text-align: left;
+}
+
+.section h3 {
+    font-weight: bold;
+    background: var(--gradient-light-to-dark-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-top: 0;
+    font-size: 1.4rem;
+    width: 100%;
+    text-align: left;
+}
+
+/* Feature box styling */
+.feature-box {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255. 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-box-content {
+    color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    text-align: left;
+    align-items: flex-start;
+}
+
+.feature-box-content h3 {
+    font-weight: bold;
+    background: var(--gradient-light-to-dark-blue);
+    -webkit0background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-top: 0;
+    font-size: 1.4rem;
+    width: 100%;
+    text-align: center;
+}
+
+/* Button Styling */
+.btn, .stButton button, button[kind="primary"] {
+    background-image: var(--gradient-light-to-dark-blue);
+    box-shadow: 0 4px 15px 0 rgba(39, 170, 255, 0.5);
+    width: 100%;
+    min-width: 200px;
+    font-size: 16px;
+    font-weight: 600;
+    color: whitesmoke;
+    cursor: pointer;
+    margin: 10px auto;
+    height: 50px;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+    border-radius: 15px;
+    transition: all .4s ease-in-out;
+    display: block;
+    text-decoration: none;
+    line-height: 50px;
+}
+
+/* Button hover effects */
+.btn:hover, .stButton button:hover, button[kind=primary]:hover {
+    background-position: 100% 0;
+    background-image: linear-gradient(to right, #00e8ff, #0070eb);
+    filter: brightness(1.1);
+    transition: all .4s ease-in-out;
+}
+
+/* Links */
+a {
+    color: #14b5ff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--purple2);
+}

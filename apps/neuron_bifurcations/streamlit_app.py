@@ -6,30 +6,31 @@ import plotly.express as px
 from scipy.integrate import odeint
 import io
 import base64
-from ode_systems import Neuron model
-from visualization import PhasePortraitPlotter, TrajectoryPlotter
-from bifurcation_analysis import BifurcationAnalyzer
+from utils.ode_systems import NeuronModel
+from utils.visualization import PhasePortraitPlotter, TrajectoryPlotter
+from utils.bifurcation_analysis import BifurcationAnalyzer
+from utils.style import *
 import os
 
-# Absolute path to current file 
-base_path = os.path.dirname(__file__)
+load_custom_css()
+apply_background("static/images/wisp.jpg")
 
-# Path to global static folder
-icon_file_path = os.path.join(base_path,"..","..","static","images","favicon.png")
-
-# Normalize the path
-icon_file_path = os.path.abspath(icon_file_path)
 
 # Configure page
 st.set_page_config(
   page_title = "Neuron Dynamics Visualizer",
-  page_icon = "icon_file_path",
+  page_icon = "static/images/favicon.png",
   layout = "wide",
   initial_sidebar_state="expanded"
 )
 
+# Initialize session state
+if 'selected_model' not in st.session_state:
+  st.session_state.selected_model = 'fitzhugh_nagumo'
+
 def main():
-  st.title("Neuron Dynamics Visualizer")
+  st.markdown("<h1> 🧠 <span class='gradient_text1'> Neuron Dynamics Visualizer </span> </h1>", unsafe_allow_html=True)
+  st.markdown("<span class='gradient_text1'>Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization</span>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
   main()

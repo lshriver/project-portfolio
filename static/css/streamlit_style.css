@@ -1,0 +1,109 @@
+/* Streamlit specific styles */
+/* Adjust Streamlit default elements */
+.stApp {
+    background-image: url('static/images/wisp.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 10px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: rgba(20, 165, 255, 0.1);
+    border-radius: 4px 4px 0 0;
+    padding: 10px 20px;
+    border: 1px solid rgba(20, 165, 255, 0.3);
+    color: whitesmoke;
+}
+
+.stTabs [data-baseweb="true"] {
+    background-color: rgba(20, 165, 255, 0.2);
+    border-bottom: 3px #14b5ff;
+    color: whitesmoke;
+}
+
+/* Sidebar customization */
+.css-1d39kg, .css-1lcbmhc {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+/* Sidebar scrollbar styling */
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--gradient-light-to-dark-blue);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to right, #00ffee, #27aaff);
+}
+
+/* Target sidebar elements for left alignment but maintain their structure */
+[data-testid="stSidebar"] div.row-widget label {
+    text-align: left;
+    width: 100%;
+}
+
+/* Ensure slideer values are left aligned */
+[data-testid="stSidebar"] .stSlider span[aria-valuetext] {
+    text-align: left;
+}
+
+/* Widget container alignment */
+[data-testid="stSidebar"] .row-widget {
+    text-align: left;
+}
+
+/* Selectbox left alignment */
+[data-testid="stSidebar"] div[data-baseweb="select"] {
+    text-align: left;
+}
+
+/* Text input and text area left alignment */
+[data-testid="stSidebar"] .stTextinput label, [data-testid="stSidebar"] .stTextArea label {
+    text-align: left;
+}
+
+/* Number inputs */
+[data-testid="stSidebar"] .stNumberInput label {
+    text-align: left;
+}
+
+/* Header 3 Sidebar Styling */
+.sidebar h3, .sidebar h3 span {
+    background: var(--gradient-light-to-dark-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Slider styling for the active (colored) part */
+.stSlider [data-baseweb=slider] div[data-type="range"] div:first-child, .stSlider [data-baseweb=slider] [data-testid="stSliderProgress"] {
+    background: var(--gradient-light-to-dark-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    height: 4px;
+}
+
+/* Slider syling for the inactive (grey) part */
+.stSlider [data-baseweb=slider] div[data-type="range"] div:nth-child(2) {
+    background: rgba(255, 255, 255, 0.1);
+    height: 4px;
+}
+
+/* Slider thumb styling */
+.stSlider [data-baseweb=slider] [role=slider] {
+    background: #14b5ff;
+    border: 2px solid whitesmoke;
+    box-shadow: 0 0 8px rgba(20, 181, 255, 0.7);
+}
