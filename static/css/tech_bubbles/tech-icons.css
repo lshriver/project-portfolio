@@ -1,0 +1,175 @@
+/* Technology Icons Font Mapping 
+ * This CSS file defines icon mappings for various technologies
+ * using font icons
+ */
+
+.tech-icon[data-tech="python"]:before {
+    content: "🐍"; /* Python */
+}
+
+.tech-icon[data-tech="javascript"]:before {
+    content: "JS"; /* JavaScript */
+}
+
+.tech-icon[data-tech="html"]:before {
+    content: "🌐"; /* HTML */
+}
+
+.tech-icon[data-tech="css"]:before {
+    content: "🎨"; /* CSS */
+}
+
+.tech-icon[data-tech="numpy"]:before {
+    content: "🔢"; /* NumPy */
+}
+
+.tech-icon[data-tech="matplotlib"]:before {
+    content: "📊"; /* Matplotlib */
+}
+
+.tech-icon[data-tech="matlab"]:before {
+    content: "📈"; /* MATLAB */
+}
+
+.tech-icon[data-tech="streamlit"]:before {
+    content: "📱"; /* Streamlit */
+}
+
+.tech-icon[data-tech="plotly"]:before {
+    content: "📉"; /* Plotly */
+}
+
+.tech-icon[data-tech="networkx"]:before {
+    content: "🕸️"; /* NetworkX */
+}
+
+.tech-icon[data-tech="sqlalchemy"]:before {
+    content: "🗃️"; /* SQLAlchemy */
+}
+
+.tech-icon[data-tech="calculus"]:before {
+    content: "∫"; /* Calculus */
+}
+
+.tech-icon[data-tech="linear-algebra"]:before {
+    content: "⊞"; /* Linear Algebra */
+}
+
+.tech-icon[data-tech="probability"]:before {
+    content: "🎲"; /* Probability */
+}
+
+.tech-icon[data-tech="statistics"]:before {
+    content: "📊"; /* Statistics */
+}
+
+.tech-icon[data-tech="chemistry"]:before {
+    content: "⚗️"; /* Chemistry */
+}
+
+.tech-icon[data-tech="physics"]:before {
+    content: "⚛️"; /* Physics */
+}
+
+.tech-icon[data-tech="quantum"]:before {
+    content: "🔮"; /* Quantum */
+}
+
+.tech-icon[data-tech="differential-equations"]:before {
+    content: "ƒ′"; /* Differential Equations */
+}
+
+.tech-icon[data-tech="signal-processing"]:before {
+    content: "〰️"; /* Signal Processing */
+}
+
+.tech-icon[data-tech="fourier"]:before {
+    content: "∑"; /* Fourier Analysis */
+}
+
+.tech-icon[data-tech="thermodynamics"]:before {
+    content: "🔥"; /* Thermodynamics */
+}
+
+.tech-icon[data-tech="molecular"]:before {
+    content: "🧪"; /* Molecular */
+}
+
+.tech-icon[data-tech="data"]:before {
+    content: "📊"; /* Data Analysis */
+}
+
+.tech-icon[data-tech="ai"]:before {
+    content: "🧠"; /* AI */
+}
+
+.tech-icon[data-tech="clifford"]:before {
+    content: "⊗"; /* Clifford Algebra */
+}
+
+.tech-icon[data-tech="geometry"]:before {
+    content: "△"; /* Geometry */
+}
+
+.tech-icon[data-tech="mathematics"]:before {
+    content: "📐"; /* Mathematics */
+}
+
+.tech-icon[data-tech="finance"]:before {
+    content: "💰"; /* Finance */
+}
+
+.tech-icon[data-tech="science"]:before {
+    content: "🔬"; /* Science */
+}
+
+.tech-icon[data-tech="neuroscience"]:before {
+    content: "🧠"; /* Neuroscience */
+}
+
+.tech-icon[data-tech="interdisciplinary"]:before {
+    content: "🔄"; /* Interdisciplinary */
+}
+
+.tech-icon[data-tech="notes"]:before {
+    content: "📝"; /* Notes */
+}
+
+.tech-icon[data-tech="pdf"]:before {
+    content: "📄"; /* PDF */
+}
+
+/* Tooltip for tech icons */
+.tech-icon .tech-icon-tooltip {
+    visibility: hidden;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10;
+}
+
+.tech-icon:hover .tech-icon-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Arrow for tooltip */
+.tech-icon .tech-icon-tooltip:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}

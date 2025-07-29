@@ -1,0 +1,180 @@
+/* Tooltip styles */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.tooltip-content{
+    visibility: hidden;
+    width: 100%;
+    background: rgba(10, 10, 20, 0.9);
+    color: whitesmoke;
+    text-align: left;
+    border-radius: 6px;
+    padding: 15px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(225, 225, 225, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.tooltip-container:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 15%;
+    margin-left: -8px;
+    border-style: solid;
+    border-color: rgba(10, 10, 20, 0.9) transparent transparent transparent;
+}
+
+.tech-tag {
+    display: inline-block;
+    background: var(--gradient-green-to-blue);
+    border: 1px solid rgba(34, 247, 147, 0.3);
+    border-radius: 15px;
+    padding: 3px 10px;
+    margin: 3px;
+    font-size: 0.8rem;
+    color: whitesmoke;
+}
+
+/* Technology Icons Container */
+.tech-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: absolute;
+    bottom: -55px;
+    left: 0;
+    width: 100%;
+    z-index: 20;    /* add high z-index to ensure icons appear on top of other elements */
+}
+
+.feature-box:hover .tech-icons {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tech-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(34, 247, 147, 0.2), rgba(10, 149, 235, 0.3));
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: whitesmoke;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: default;
+    z-index: 20;    /* match the container's z-index */
+    position: relative;     /* needed for z-index to work */
+}
+
+.tech-icon:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(10, 149, 235, 0.3);
+    background: var(--gradient-green-to-blue);
+}
+
+/* Make space for icons under feature box */
+.feature-box {
+    margin-bottom: 70px;
+    position: relative;
+}
+
+.emoji {
+    background: none !important;
+    color: initial !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    font-style: normal;
+    text-shadow: none;
+    display: inline-block;
+}
+
+/* Emoji bubbles for hover effects */
+.emoji-bubbles {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 10;
+    pointer-events: none;       /* allow clicking through bubbles */
+}
+
+.tooltip-container:hover .emoji-bubbles {
+    opacity: 1;
+    top: -55px;
+}
+
+.emoji-bubble {
+    font-size: 1.6rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    animation: float 3s ease-in-out infinite;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transform: translateY(0);
+}
+
+.emoji-bubble:nth-child(1) {
+    animation-delay: 0s;
+}
+.emoji-bubble:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.emoji-bubble:nth-child(3) {
+    animation-delay: 0.6s;
+}
+.emoji-bubble:nth-child(4) {
+    animation-delay: 0.9s;
+}
+.emoji-bubble:nth-child(5) {
+    animation-delay: 1.2s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px)
+    }
+}

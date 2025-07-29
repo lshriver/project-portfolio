@@ -1,1 +1,85 @@
 <!-- Homepage with links -->
+{% extends "base.html" %}
+
+{% block title %}Lauren Shriver - Portfolio{% endblock %} 
+
+{% block content %}
+<!-- About Me Section -->
+ <div class="projects-section" style="text-align: center;">
+
+    <div class="feature-box-content" style="text-align: center;">
+
+        <div class="contact-links" style="margin-bottom: 1rem; display: flex; justify-content: center; width: 100%; text-align: center;">
+
+            <a href="https://www.linkedin.com/in/lshriver" target="_blank">
+                <span class="emoji">👥</span>
+                <span class="link-text">LinkedIn</span>
+            </a>
+
+        </div>
+
+    </div>
+
+ </div>
+
+<!-- Projects Section -->
+<div style="text-align: center;">
+    <h2 class="gradient_text1" style="
+        display: inline-block;
+        margin: 3rem auto 2rem;
+        font-size: 2.5rem;
+        padding: 1rem;
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.7));
+        ">
+        Apps     
+    </h2>
+</div>
+
+<div class="projects-section">
+    <div class="card-row">
+        <!-- Bifurcation App -->
+         <div class="feature-box">
+            <div class="feature-box-content">
+                <h3 class="gradient_text1">
+                    Neruon Model Analysis
+                </h3>
+                <div class="tooltip-content">
+                    <h4 style="color: #4facfe;">
+                        Technologies Used
+                    </h4>
+                    <div>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Streamlit</span>
+                        <span class="tech-tag">Plotly</span>
+                    </div>
+                </div>
+            </div>
+            <p style="color: #c5f8ff;">
+                About neuron model bifurcation diagrams and phase plots.
+            </p>
+            <a href="{{ url_for('neural_bifurcations') }}" class="btn" style="font-size: 16px; font-weight: 600; color: #FFFFFF !important; background-clip: border-box !important; -webkit-background-clip: border-box !important;">
+                View Project
+            </a>
+            <div class="tech-icons">
+                <div class="tech-icon" data-tech="python">
+                    <span class="tech-icon-tooltip">
+                        Python
+                    </span>
+                </div>
+                <div class="tech-icon" data-tech="streamlit">
+                    <span class="tech-icon-tooltip">
+                        Streamlit
+                    </span>
+                </div>
+                <div class="tech-icon" data-tech="plotly">
+                    <span class="tech-icon-tooltip">
+                        Plotly
+                    </span>
+                </div>
+            </div>
+         </div>
+        <!-- Kuramoto App -->
+    </div>
+</div>
+
+{% endblock %}
