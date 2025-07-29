@@ -1,1 +1,2 @@
-# Flask app entry point
+from flask import Flask, render_template
+import os

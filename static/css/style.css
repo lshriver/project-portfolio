@@ -48,6 +48,7 @@ html, body, [class*=css] {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    padding-top: 60px;
 }
 
 .gradient_text1 {
@@ -166,7 +167,7 @@ html, body, [class*=css] {
 
 .feature-box-content h3 {
     font-weight: bold;
-    background: var(--gradient-light-to-dark-blue);
+    background: var(--gradient-blue-to-purple);
     -webkit0background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -175,6 +176,55 @@ html, body, [class*=css] {
     font-size: 1.4rem;
     width: 100%;
     text-align: center;
+}
+
+.feature-box-content p {
+    margin-bottom: 15px;
+    width: 100%;
+    color: whitesmoke;
+}
+
+/* Card row layout for horizontal alignment */
+.card-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;    /* center the cards in their container */
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.card-row .feature-box {
+    flex: 0 1 400px;
+    margin: 0 15px 25px 15px;
+}
+
+/* 3 cards per row maximum on large screens */
+@media (min-width: 1200px) {
+    .card-row .feature-box {
+        flex-basis: calc(45% - 30px);
+        max-width: calc(45% - 30px);
+    }
+}
+
+/* 2 cards per row on medium screens */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .card-row .feature-box {
+        flex-basis: calc(45% - 30px);
+        max-width: calc(45% - 30px);
+    }
+}
+
+/* Single column on very small screens */
+@media (max-width: 479px) {
+    .card-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card-row .feature-box {
+        flex-basis: 90%;
+        max-width: 90%;
+    }
 }
 
 /* Button Styling */
