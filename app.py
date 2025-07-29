@@ -10,6 +10,7 @@ def ensure_directories():
         os.path.join('static', 'js'),
         os.path.join('static', 'images'),
         os.path.join('static', 'css', 'tech_bubbles'),
+        os.path.join('static', 'css', 'buttons'),
         os.path.join('templates', 'projects')
     ]
 

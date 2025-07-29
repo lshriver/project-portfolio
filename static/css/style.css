@@ -169,9 +169,8 @@ html, body, [class*=css] {
 /* Links */
 a {
     font-weight: bold;
-    text-decoration: non;
+    text-decoration: none;
     transition: all 0.3s ease;
-    color: #00e8ff;
 }
 
 a:hover {
@@ -208,8 +207,6 @@ a:hover {
 .projects-section {
     margin: 40px 0;
 }
-
-
 
 /* Card row layout for horizontal alignment */
 .card-row {

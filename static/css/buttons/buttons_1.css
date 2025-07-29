@@ -1,6 +1,6 @@
 /* Button Styling */
 .btn {
-    background-image: var(--gradient-light-to-dark-blue);
+    background-image: var(--gradient-green-to-blue);
     box-shadow: 0 4px 15px 0 rgba(56, 152, 255, 0.5);
     width: 85%;
     min-width: 180px;

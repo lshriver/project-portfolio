@@ -126,7 +126,7 @@
     opacity: 0;
     transition: all 0.5s ease;
     z-index: 10;
-    pointer-events: none;       /* allow clicking through bubbles */
+    pointer-events: auto;       /* allow clicking through bubbles */
 }
 
 .tooltip-container:hover .emoji-bubbles {
@@ -149,6 +149,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
     transform: translateY(0);
+    pointer-events: auto;  /* Ensure each bubble is hoverable */
 }
 
 .emoji-bubble:nth-child(1) {
