@@ -1,0 +1,170 @@
+/* Gradient text - main reusable class */
+.gradient_text1 {
+    display: inline-block;
+    font-weight: bold !important;
+    background-image: var(--gradient-light-to-dark-blue) !important;
+    -webkit-background-clip: text;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent;
+}
+
+.gradient_text2 {
+    display: inline-block;
+    font-weight: bold;
+    background-image: var(--gradient-blue-to-purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.gradient-text3 {
+    background: linear-gradient(130deg, #22f793 0%, #0a95eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Special styling for mathematical content */
+
+/* Math container styling */
+.math-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Math formula styling */
+.math-formula {
+    text-align: center;
+    margin: 20px 0;
+    color: #00f5db;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+/* Heading styles */
+.section-title {
+    color: #22f793;
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 30px 0 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Content boxes */
+.content-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 3px solid #22f793;
+}
+
+/* Code block styling */
+.code-block {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+    font-family: monospace;
+    color: #00f5db;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+/* MathJax specific styling */
+mjx-container {
+    padding: 5px 0;
+    overflow-x: auto;
+}
+
+/* Variable styling within math equations */
+.variable {
+    font-style: italic;
+    color: #f5c400;
+}
+
+/* Definition list styling */
+dl.math-definition {
+    margin: 20px 0;
+    padding: 0;
+}
+
+dl.math-definition dt {
+    font-weight: bold;
+    color: #22f793;
+    margin-top: 10px;
+}
+
+dl.math-definition dd {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+/* Equations with labels */
+.equation-labeled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.equation-content {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.equation-label {
+    min-width: 30px;
+    text-align: right;
+    color: #aaa;
+}
+
+/* Special note box */
+.note-box {
+    background: rgba(0, 245, 219, 0.1);
+    border-left: 3px solid #00f5db;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.note-box .note-title {
+    color: #00f5db;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Math backdrop for improved readability */
+.mathBackdrop {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom styling for MathJax elements */
+.MathJax, .MathJax_Display {
+    color: #00f5db !important;
+}
+
+/* Target MathJax elements to ensure proper font rendering */
+.mjx-chtml {
+    font-family: serif !important;
+}
+
+/* Keep all UI text as Aclonica */
+.mjx-mtext {
+    font-family: 'Aclonica', sans-serif !important;
+}
+
+/* Make sure math spans use serif font and not Aclonica */
+.mjx-math * {
+    font-family: serif !important;
+}

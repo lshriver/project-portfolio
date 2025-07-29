@@ -55,25 +55,7 @@ html, body, [class*=css] {
     padding-top: 60px;
 }
 
-.gradient_text1 {
-    display: inline-block;
-    font-weight: bold !important;
-    background-image: var(--gradient-light-to-dark-blue) !important;
-    -webkit-background-clip: text;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    color: transparent;
-}
 
-.gradient_text2 {
-    display: inline-block;
-    font-weight: bold;
-    background-image: var(--gradient-blue-to-purple);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
 
 /* Add semi-transparent overlay for better content visibility */
 .main::before {
@@ -227,87 +209,7 @@ a:hover {
     margin: 40px 0;
 }
 
-/* Button Styling */
-.btn {
-    background-image: var(--gradient-light-to-dark-blue);
-    box-shadow: 0 4px 15px 0 rgba(56, 152, 255, 0.5);
-    width: 85%;
-    min-width: 180px;
-    font-size: 16px;
-    font-weight: 700;
-    color: whitesmoke;
-    cursor: pointer;
-    margin: 10px auto;
-    height: 50px;
-    text-align: center;
-    border: none;
-    background-size: 300% 100%;
-    border-radius: 50px;
-    transition: all .4s ease-in-out;
-    display: flex;
-    text-decoration: none;
-    line-height: 50px;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    background-clip: border-box !important;
-    -webkit-background-clip: border-box !important;
-    cursor: pointer;
-    letter-spacing: 0.5px
-}
 
-/* Style for text inside buttons */
-.btn span, 
-.btn a, 
-.btn p,
-.btn div {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: white !important;
-    background: transparent !important;
-    background-image: none !important;
-    -webkit-background-clip: border-box !important;
-    background-clip: border-box !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    margin: 0;
-    padding: 0;
-}
-
-/* Fix for buttons that are themselves links */
-a.btn {
-    color: white !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
-
-/* Extra override for links inside buttons to ensure white color */
-.btn > a {
-    color: white !important;
-    text-decoration: none;
-}
-
-/* Button hover effects */
-.btn:hover {
-    background-position: 100% 0;
-    background-image: linear-gradient(to right, #00e8ff, #0070eb);
-    filter: brightness(1.1);
-    transition: all .4s ease-in-out;
-}
-
-.feature-box-content .btn {
-    width: 90%;
-    max-width: 180px;
-    margin-top: auto;
-    align-self: center;
-}
 
 /* Card row layout for horizontal alignment */
 .card-row {
