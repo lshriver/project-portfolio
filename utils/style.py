@@ -6,8 +6,7 @@ from pathlib import Path
 css_files = [
     Path("static/css/style.css"),
     Path("static/css/theme.css"),
-    Path("static/css/streamlit_style.css"),
-    Path("static/css/buttons/buttons_rainbow.css")
+    Path("static/css/streamlit_style.css")
 ]
 
 def load_custom_css():
@@ -34,7 +33,7 @@ def apply_background(image_path: str):
                 background-position: center;
             }}
             </style>
-        """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True) 
 
 def load_footer(path: str = "templates/footer.html"):
     """Read footer.html and render it at the bottom of the Streamlit app."""

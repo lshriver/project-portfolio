@@ -47,6 +47,9 @@ def main():
   with st.sidebar: 
     st.sidebar.markdown("<h2 class='gradient_text1'>Neuron Model Configuration</h2>", unsafe_allow_html=True)
 
+    seed = st.sidebar.number_input("Random seed", 0 ,10000, 27)
+    np.random.seed(seed)
+
     # Model selection
     model_options = {
       'fitzhugh_nagumo': 'FitzHugh-Nagumo',
@@ -58,7 +61,7 @@ def main():
     }
 
     selected_key = st.selectbox("Select Neuron Model", options=list(model_options.keys()),
-                                    format_func = lambda x: model_options[x],
+                                    format_func = lambda x: model_options[x], 
                                     index = list(model_options.keys()).index(st.session_state.selected_model)
                                 )
     
@@ -74,7 +77,7 @@ def main():
     params = {}
     for param_name, (default_val, param_range, description) in neuron_model.get_parameters().items():
       params[param_name] = st.slider(
-        f"{param_name} - {description}",
+        rf"${param_name}$ - {description}",
         min_value=param_range[0],
         max_value=param_range[1],
         value=default_val,
@@ -83,12 +86,12 @@ def main():
 
     # Time range
     st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
-    t_max = st.slider("Maximum time", 0.5, 1.0, 20.0, 100.0)
-    num_points = st.slider("Number of points", 10, 100, 1000, 5000)
+    t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5)
+    num_points = st.slider("Number of points", 100, 5000, 1000, 100)
 
     # Initial Conditions
     st.sidebar.markdown("<h2 class='gradient_text1'>Initial Conditions</h2>", unsafe_allow_html=True)
-    num_trajectories = st.slider("Number of trajectories", 1, 3, 10)
+    num_trajectories = st.slider("Number of trajectories", min_value=1, value=3, max_value=10)
 
     initial_conditions = []
     var_names = neuron_model.get_variable_names()
@@ -115,18 +118,80 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
           x0 = st.number_input(
-            f"{var_names[0]}_0",
+            rf"${var_names[0]}_0$",
             value=np.random.uniform(default_range[0][0], default_range[0][1]),
-            key = f"x0_{i}"
+            key = rf"x0_{i}"
           )
         with col2:
           y0 = st.number_input(
-            f"{var_names[1]}_0",
+            rf"${var_names[1]}_0$",
             value=np.random.uniform(default_range[0][0], default_range[0][1]),
-            key = f"y0_{i}"
+            key = rf"$y0_{i}$"
           )
         initial_conditions.append([x0, y0])
-    
+
+  # Main content area
+  tab1, tab2, tab3, tab4 = st.tabs(["Phase Portrait", "Bifurcation Analysis", "Spike Analysis", "Model Info"])
+
+  with tab1:
+    st.markdown("<h2 class='gradient_text2'>Phase Portrait & Neural Dynamics</h2>", unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+      # Generate phase portrait
+      if len(var_names) >- 2:
+        plotter = PhasePortraitPlotter(neuron_model)
+        fig_phase = plotter.plot_phase_portrait(
+          params, 
+          initial_conditions,
+          t_max,
+          num_points
+        )
+        st.plotly_chart(fig_phase, use_container_width=True)
+
+    with col2:
+      # Generate time series
+      trajectory_plotter = TrajectoryPlotter(neuron_model)
+      fig_time = trajectory_plotter.plot_time_series(
+        params,
+        initial_conditions[0] if initial_conditions else [1, 1],
+        t_max, 
+        num_points
+      )
+      st.plotly_chart(fig_time, use_container_width=True)
+
+    # Show neural activity data
+    if st.checkbox("Show nerual activity data"):
+      t = np.linspace(0, t_max, num_points)
+      for i, ic in enumerate(initial_conditions[:3]):  # Limit to 3 for display
+        sol = odeint(lambda y, t: neuron_model.equations(y, t, params), ic, t)
+        df_data = {
+          'Time (ms)': t,
+        }
+        for j, var_name in enumerate(var_names):
+          df_data[f'{var_name}_{i+1}'] = sol[:, j]
+
+        if i == 0:
+          import pandas as pd
+          df = pd.DataFrame(df_data)
+        else:
+          for j, var_name in enumerate(var_names):
+            df[f'{var_name}_{i+1}'] = sol[:,1]
+
+      st.dataframe(df.head(20))
+
+      # Export functionality
+      csv = df.to_csv(index=False)
+      st.download_button(
+        label="Download neural activity data as CSV",
+        data=csv,
+        file_name=f"{selected_key}_neural_activty.csv",
+        mime="text/csv"
+      )
+
+  with tab2:
+    st.markdown("<h2 class='gradient_text2'>Neural Bifurcation Analysis)</h2>")
     
 
   parent_utils_style.load_footer()

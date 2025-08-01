@@ -3,6 +3,16 @@ import plotly.graph_objects as go
 import plotly.express as px
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+import importlib.util
+import os
+
+colormaps_path = os.path.abspath(
+  os.path.join(os.path.dirname(__file__),
+               "..", "..", "..", "utils", "colormaps.py")
+)
+colormaps_spec = importlib.util.spec_from_file_location("parent_utils_colormaps", colormaps_path)
+parent_utils_colormaps = importlib.util.module_from_spec(colormaps_spec)
+colormaps_spec.loader.exec_module(parent_utils_colormaps)
 
 class PhasePortraitPlotter:
     """Handles phase portrait visualization for neural models"""
@@ -27,6 +37,7 @@ class PhasePortraitPlotter:
 
         # Plot trajectories
         colors = ["#00E8FF", "#2F8DF7", "#5E91EE", "#8D66E6", "#BC3ADD", "#EB0FD5"]
+        colors = ["#4C48F2", "#5E17EB", "#EB0FD5", "#FF8855", "#70e000", "#38b000", "#00e8ff", "#2F8DF7"]
 
         for i, ic in enumerate(initial_conditions):
             try:
@@ -195,7 +206,7 @@ class PhasePortraitPlotter:
                     mode='lines',
                     line=dict(color='gray', width=1),
                     showlegend=False,
-                    hoverinfor='skip'
+                    hoverinfo='skip'
                 ))
     
 class TrajectoryPlotter:
@@ -208,64 +219,48 @@ class TrajectoryPlotter:
         """"Create time series plot of variables"""
         t = np.linspace(0, t_max, num_points)
         var_names = self.neuron_model.get_variable_names()
-        n_vars = len(var_names)
 
-        try:
-            # integrate once
+        try: 
             sol = odeint(
-                lambda y, tt: self.neuron_model.equations(y, tt, params), 
+                lambda y, t: self.neuron_model.equations(y, t, params),
                 initial_condition, t
             )
 
-            # make one row per variable
-            fig = make_subplots(
-                rows = n_vars, cols = 1,
-                shared_xaxes = True,
-                vertical_spacing = 0.05,
-                subplot_titles = var_names
-            )
+            fig = go.Figure()
+            colors = ["#00E8FF", "#2F8DF7", "#5E91EE", "#8D66E6", "#BC3ADD", "#EB0FD5"]
 
-            colors = ["#4C48F2", "#70e000"]
-
+            # Plot each variable
             for i, var_name in enumerate(var_names):
-                fig.add_trace(
-                    go.Scatter(
-                        x = t,
-                        y = sol[:, i],
-                        mode = 'lines',
-                        line = dict(color=colors[i % len(colors)], width=2),
-                        name = var_name
-                    ),
-                    row = i + 1, col = 1
-                )
-                # y-axis label per row
-                fig.update_yaxes(title_text=var_name, row=i+1, col=1)
-
-            # only the bottom subplot needs an x-axis label
-            fig.update_xaxes(title_text="Time", row=n_vars, col=1)
+                fig.add_trace(go.Scatter(
+                    x=t,
+                    y=sol[:, i],
+                    mode='lines',
+                    name=var_name,
+                    line=dict(color=colors[i % len(colors)], width=2)
+                ))
 
             fig.update_layout(
-                title = "Time Series", 
-                hovermode = 'x unified',
-                showlegend = False,
-                width = 600,
-                height = 300 * n_vars 
+                title="Time Series",
+                xaxis_title="Time",
+                yaxis_title="Value",
+                hovermode='x unified',
+                width=600,
+                height=500
             )
-
             return fig
-
+        
         except Exception as e:
-            # fallback: single error annotation
+            # Return empty figure with error message
             fig = go.Figure()
             fig.add_annotation(
-                text = f"Error computing trajectory: {e}",
-                xref = "paper", yref = "paper",
-                x = 0.5, y = 0.5, showarrow = False,
-                font = dict(size=16, color="red")
+                text=f"Error computing trajectory: {str(e)}",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, showarrow=False,
+                font=dict(size=16, color="red")
             )
             fig.update_layout(
-                title = "Time Series - Error",
-                width = 600,
-                height = 300 * max(1, n_vars)
+                title="Time Series - Error",
+                width=600,
+                height=500
             )
             return fig
