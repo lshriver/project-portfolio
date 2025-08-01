@@ -31,7 +31,7 @@ class NeuronModel:
             'a': (0.7, (0.1, 2.0), 'Recovery variable parameter'),
             'b': (0.8, (0.1, 2.0), 'Recovery variable parameter'),
             'tau': (12.5, (1.0, 50.0), 'Recovery time constant'),
-            'J': (0.5, (-2.0, 3.0), 'Applied Current J')
+            'J': (0.5, (-2.0, 3.0), 'Applied Current')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -46,6 +46,26 @@ class NeuronModel:
 
     def setup_hodgkin_huxley(self):
         """Simplified Hodgkin-Huxley model (2D reduction)"""
+        self.parameters = {
+            'g_Na': (120.0, (50.0, 200.0), 'Sodium conductance $g_Na \mathrm{(mS/cm^2)}$'),
+            'g_K': (36.0, (10.0, 80.0), 'Potassium conductance $g_K \mathrm{(mS/cm^2)}$'),
+            'g_L': (0.3, (0.1, 1.0), 'Leak conductance $g_L \mathrm{(mS/cm^2)}'),
+            'E_Na': (50.0, (40.0, 60.0), 'Sodium reversal potential $E_{Na} \mathrm{(mV)}'),
+            'E_K': (-77.0, (-90.0, -60.0), 'Potassium reversal potential $E_{K} \mathrm{(mV)}'),
+            'E_L': (-54.4, (-70.0, -40.0), 'Leak reversal potential $E_{L} \mathrm{(mV)}'),
+            'I': (10.0, (-50.0, 100.0), 'Applied current $I \mathrm{(\mu A/cm^2)}$'),
+            'C': (1.0, (0.5, 2.0), 'Membrane capacitance $C \mathrm{(\mu F/cm^2)}$')
+        }
+        self.variable_names = ['V', 'n']
+        self.description = """
+        - Simplified Hodgkin-Huxley mdoel with voltage $V$ and potassium gating variable $n$.
+        - Classic model for action potential generation in neruons.
+        - Shows excitablity threshoold and spike generation.
+        """
+        self.equations_latex = [
+            r"\frac{dV}{dt} = \frac{1}{C}[I - g_{Na}m_{\infty}^3(V)(V-E_{Na}) - g_K n^4(V-E_K) - g_L(V-E_L)]",
+            r"\frac{dn}{dt} = \frac{n_{\infty}(V) - n}{\tau_n (V)}"
+        ]
 
     def setup_morris_lecar(self):
         """Morris-Lecar neuron model: voltage-gated calcium and potassium"""
@@ -73,6 +93,31 @@ class NeuronModel:
                 V - V**3/3 - W + J,
                 (V + a - b*W) / tau
             ]
+        elif self.model_type == 'hodgkin_huxley':
+            V, n = state
+            g_Na, g_K, g_L = params['g_Na'], params['g_K'], params['g_L']
+            E_Na, E_K, E_L = params['E_Na'], params['E_K'], params['E_L']
+            I, C = params['I'], params['C']
+
+            # Gating functions
+            alpha_m = 0.1 * (V + 40) / (1 - np.exp(-(V + 40)/10))
+            beta_m = 4 * np.exp(-(V + 65)/18)
+            m_inf = alpha_m / (alpha_m + beta_m)
+            alpha_n = 0.01 * (V + 55) / (1 - np.exp(-(V + 55)/10))
+            beta_n = 0.125 * np.exp(-(V + 65)/80)
+
+            # Currents
+            I_Na = g_Na * m_inf**3 * (0.8 - n) * (V - E_Na)   # Simplifed h \approx 0.8 - n
+            I_K = g_K * n**4 * (V - E_K)
+            I_L = g_L * (V - E_L)
+
+            return [
+                (I - I_Na - I_K - I_L) / C,
+                alpha_n * (1 - n) - beta_n *n
+            ]
+        
+        else:
+            raise ValueError(f"Unknown neruon model type: {self.model_type}")
         
     def get_parameters(self):
         """Return parameter definitions"""
