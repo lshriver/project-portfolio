@@ -103,4 +103,11 @@ class NeuronModel:
         
         elif self.model_type == 'integrate_fire':
             # Leaky integrate-and-fire typically has one stable equilibria
-            E_L, I, a = 
+            E_L, I, a = params['E_L'], params['I'], params['a']
+            if a > 0:
+                V_eq = E_L + I/a    # Approximate equilibrium
+                w_eq = I
+                return [[V_eq, w_eq]]
+            return []
+        else:
+            return []   # Most neruon models require numerical methods for equlibria
