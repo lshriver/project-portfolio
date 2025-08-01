@@ -17,13 +17,13 @@
     border-radius: 4px 4px 0 0;
     padding: 10px 20px;
     border: 1px solid rgba(20, 165, 255, 0.3);
-    color: whitesmoke;
+    color: whitesmoke !important;
 }
 
-.stTabs [data-baseweb="true"] {
-    background-color: rgba(20, 165, 255, 0.2);
-    border-bottom: 3px #14b5ff;
-    color: whitesmoke;
+.stTabs [aria-selected="true"] {
+    background-color: rgba(20, 181, 255, 0.2);
+    border-bottom: 3px solid #14b5ff;
+    color: whitesmoke !important;
 }
 
 /* Sidebar customization */
