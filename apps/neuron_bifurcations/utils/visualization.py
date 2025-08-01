@@ -92,7 +92,9 @@ class PhasePortraitPlotter:
             hovermode = 'closest',
             showlegend = True,
             width = 600,
-            height = 500
+            height = 500,
+            paper_bgcolor='rgba(0, 0, 0, 0.5)',
+            plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
         )
 
         return fig
@@ -142,7 +144,9 @@ class PhasePortraitPlotter:
                     zaxis_title=var_names[2]
                 ),
                 width=600,
-                widht=500
+                widht=500,
+                paper_bgcolor='rgba(0, 0, 0, 0.5)',
+                plot_bgcolor = 'rgba(0, 0, 0, 0.5)'
             )
 
             return fig
@@ -246,8 +250,8 @@ class TrajectoryPlotter:
                 hovermode='x unified',
                 width=600,
                 height=500,
-                paper_bgcolor='rgba(0, 0, 0, 0)',
-                #plot_bgcolor = 'rgba(0, 0, 0, 0)',
+                paper_bgcolor='rgba(0, 0, 0, 0.5)',
+                plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
                 margin=dict(l=40, r=40, t=40, b=40)
             )
             return fig
