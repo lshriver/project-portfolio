@@ -138,22 +138,19 @@
             <main>
                 {% block content %}{% endblock %}
             </main>
-
-            <footer style="text-align: center; margin-top: 100px; margin-bottom: 120px;">
-                <p class="gradient_text2" style="opacity: 1.0; font-size: 1.1rem; padding: 10px; display: inline-block;">
-                    © 2025 Lauren Shriver. All rights reserved.
-                </p>
-            </footer>
         </div>
         
         <!-- Common script for all pages -->
-         <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-        
+        <script src="{{ url_for('static', filename='js/common.js') }}"></script>
         <!-- New functionality scripts -->
         <script src="{{ url_for('static', filename='js/search.js') }}"></script>
         <script src="{{ url_for('static', filename='js/copy-code.js') }}"></script>
 
         <!-- Page-specific scripts -->
-         {% block scripts %}{% endblock %}
+        {% block scripts %}{% endblock %}
+
+
+        {% include "footer.html" %}
+
     </body>
 </html>

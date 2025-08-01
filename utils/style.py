@@ -5,7 +5,9 @@ from pathlib import Path
 
 css_files = [
     Path("static/css/style.css"),
-    Path("static/css/streamlit_style.css")
+    Path("static/css/theme.css"),
+    Path("static/css/streamlit_style.css"),
+    Path("static/css/buttons/buttons_rainbow.css")
 ]
 
 def load_custom_css():

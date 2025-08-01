@@ -73,3 +73,34 @@ class NeuronModel:
                 V - V**3/3 - W + J
                 (V + a - b*W) / tau
             ]
+        
+    def get_parameters(self):
+        """Return parameter definitions"""
+        return self.parameters
+    
+    def get_variable_names(self):
+        """Return variable names"""
+        return self.variable_names
+    
+    def get_description(self):
+        """Return system description"""
+        return self.description
+    
+    def get_equations_latex(self):
+        """Return LaTeX representation of equations"""
+        return self.equations_latex
+    
+    def get_equilibrium_points(self, params):
+        """Calculate equilibrium points analytically where possible"""
+        if self.model_type == 'fitzhugh_nagumo':
+            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
+            return []
+        
+        elif self.model_type == 'wilson_cowan':
+            # Wilson-Cowan equlibria depend on sigmoid funcitons
+            # Generally requires numerical methods
+            return []
+        
+        elif self.model_type == 'integrate_fire':
+            # Leaky integrate-and-fire typically has one stable equilibria
+            E_L, I, a = 
