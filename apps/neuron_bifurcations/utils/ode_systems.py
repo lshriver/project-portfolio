@@ -95,13 +95,73 @@ class NeuronModel:
         ]
 
     def setup_izhikevich(self):
-        """Nzhikevich neuron model: efficient spiking model"""
+        """Izhikevich neuron model: efficient spiking model"""
+        self.parameters = {
+            'a': (0.02, (0.001, 0.2), '$a$ - Recovery time scale'),
+            'b': (0.2, (0.01, 0.5), '$b$ - Recovery sensitivity'),
+            'c': (-65.0, (-80.0, -40.0), '$c \ \mathrm{(mV)}$ - Reset potential'),
+            'd': (6.0, (0.1, 20.0), '$d$ - Recovery increment'),
+            'I': (14.0, (-20.0, 50.0), '$I \ \mathrm{(pA)}$ - Applied current')
+        }
+        self.variable_names = ['v', 'u']
+        self.description = """
+        - Izhikevich model combines efficiency with bilogical realism.
+        - $v$ is the membrane potential, $u$ is the recovery variable.
+        - Can reproduce various neuronal firing patterns.
+        """
+        self.equations_latex = [
+            r"\frac{dv}{dt} = 0.04v^2 + 5v + 140 - u + I",
+            r"\frac{du}{dt} = a(bv - u)"
+        ]
 
     def setup_wilson_cowan(self):
         """Wilson-Cowan neural field model: excitatory and inhibitory populations"""
+        self.parameters = {
+            'tau_E': (1.0, (0.1, 10.0), '$ \\tau_{E}$ - Excitatory time constant'),
+            'tau_I': (1.0, (0.1, 10.0), '$ \\tau_{I}$ - Inhibitory time constant'),
+            'c_EE': (16.0, (5.0, 30.0), '$c_{EE}$ - Excitatory-Excitatory coupling'),
+            'c_EI': (12.0, (5.0, 25.0), '$c_{EI}$ - Excitatory-Inhibitory coupling'),
+            'c_IE': (15.0, (5.0, 30.0), '$c_{IE}$ - Inhibitory-Excitatory coupling'),
+            'c_II': (3.0, (1.0, 15.0), '$c_{II}$ - Inhibitory-Inhibitory coupling'),
+            'a_E': (1.3, (0.5, 3.0), '$a_E$ - Excitatory gain'),
+            'a_I': (2.0, (0.5, 4.0), '$a_I$ - Inhibitory gain'),
+            'theta_E': (4.0, (1.0, 10.0), '$\theta_E$ - Excitatory threshold'),
+            'theta_I': (3.7, (1.0, 10.0), '$\theta_I$ - Inhibitory threshold'),
+            'P': (1.0, (-5.0, 15.0), '$P$ - External input') 
+        }
+        self.variable_names = ['E', 'I']
+        self.description = """
+        - Wilson-Cowan model describes dynamics of excitatory ($E$) and inhibitory ($I$) neural populations.
+        - Shows oscillations, bistability, and various activity patterns.
+        - Imortant for understanding neural field dynamics.
+        """
+        self.equations_latex = [
+            r"\frac{dE}{dt} = \frac{1}{\tau_E}[-E + S_E(c_{EE}E - c_{EI}I + P)]",
+            r"\frac{dI}{dt} = \frac{1}{\tau_I}[-I + S_I(c_{IE}E - c_{II}I)]"
+        ]
 
     def setup_integrate_fire(self):
         """Leaky Integrate-and-Fire neuron with adaptation"""
+        self.parameters = {
+            'tau_m': (20.0, (5.0, 100.0), '$\tau_m \ \mathrm{(ms)}$ - Membrane time constant'),
+            'tau_w': (144.0, (50.0, 500.0), '$\tau_w \ \mathrm{(ms)}$ - Adaptation time constant'),
+            'a': (4.0, (0.0, 20.0), '$a \ \mathrm{(nS)}$ - Subthreshold adaptation'),
+            'b': (0.0805, (0.0, 0.5), '$b \ \mathrm{(nA)}$ - Spike-triggered adaptation'),
+            'E_L': (-70.6, (-80.0, -60.0), '$E_L \ \mathrm{(mV)}$ - Leak reversal potential'),
+            'Delta_T': (2.0, (0.5, 10.0), '$\Delta_T \ \mathrm{(mV)}$ - Slope factor'),
+            'V_T': (-50.4, (-60.0, -40.0), '$V_T \ \mathrm{(mV)}$ - Threshold potential'),
+            'I': (0.65, (-2.0, 5.0), '$I \ \mathrm{(nA)}$ - Applied current')
+        }
+        self.variable_names = ['V', 'w']
+        self.description = """
+        - Adaptive Exponential Integrate-and-Fire model.
+        - $V$ is membrane potential, $w$ is adaptation current.
+        - Shows spike-freqauency adaptation and various firing patterns.
+        """
+        self.equations_latex = [
+            r"\frac{dV}{dt} = \frac{1}{\tau_m}[-(V - E_L) + \Delta_T e^{\frac{V-V_T}{\Delta_T}} - w + I]",
+            r"\frac{dw}{dt} = \frac{1}{\tau_w}[a(V - E_L) - w]"
+        ]
 
     def equations(self, state, t, params):
         """
@@ -117,6 +177,7 @@ class NeuronModel:
                 V - V**3/3 - W + J,
                 (V + a - b*W) / tau
             ]
+        
         elif self.model_type == 'hodgkin_huxley':
             V, n = state
             g_Na, g_K, g_L = params['g_Na'], params['g_K'], params['g_L']
@@ -139,6 +200,7 @@ class NeuronModel:
                 (I - I_Na - I_K - I_L) / C,
                 alpha_n * (1 - n) - beta_n *n
             ]
+        
         elif self.model_type == 'morris_lecar':
             V, W = state
             g_Ca, g_K, g_L = params['g_Ca'], params['g_K'], params['g_L']
@@ -155,6 +217,7 @@ class NeuronModel:
                 I - g_Ca * m_inf * (V - E_Ca) - g_K * W * (V - E_K) - g_L * (V - E_L),
                 phi * (w_inf - W) / tau_w
             ]
+        
         elif self.model_type == 'izhikevich':
             v, u = state
             a, b, I = params['a'], params['b'], params['I']
@@ -163,7 +226,42 @@ class NeuronModel:
                 0.04 * v**2 + 5*v + 140 - u + I,
                 a * (b*v - u)
             ]
+        
+        elif self.model_type == 'wilson_cowan':
+            E, I_pop = state # Renamed I to I_pop to avoid conflic with current
+            tau_E, tau_I = params['tau_E'], params['tau_I']
+            c_EE, c_EI, c_IE, c_II = params['c_EE'], params['c_EI'], params['c_IE'], params['c_II']
+            a_E, a_I = params['a_E'], params['a_I']
+            theta_E, theta_I = params['theta_E'], params['theta_I']
+            P = params['P']
 
+            # Sigmoid activation function
+            def S_E(x):
+                return 1 / (1 + np.exp(-a_E * (x - theta_E)))
+            
+            def S_I(x):
+                return 1 / (1 + np.exp(-a_I * (x - theta_I)))
+            
+            return [
+                (-E + S_E(c_EE * E - c_EI * I_pop + P)) / tau_E,
+                (-I_pop + S_I(c_IE * E - c_II * I_pop)) / tau_I
+            ]
+        
+        elif self.model_type == 'integrate_fire':
+            V, w = state
+            tau_m, tau_w = params['tau_m'], params['tau_w']
+            a, b = params['a'], params['b']
+            E_L, Delta_T, V_T = params['E_L'], params['Delta_T'], params['V_T']
+            I = params['I']
+
+            # Exponential term with numerical stability
+            exp_term = Delta_T * np.exp(min((V - V_T) / Delta_T, 20))   # Cap to prevent overflow
+
+            return [
+                (-(V - E_L) + exp_term - w + I) / tau_m,
+                (a * (V - E_L) - w) / tau_w
+            ]
+        
         else:
             raise ValueError(f"Unknown neruon model type: {self.model_type}")
         
