@@ -74,15 +74,16 @@ class BifurcationAnalyzer:
                 continue
         
         # Create bifurcation diagram
-        fig = go.Figure()
+        fig = go.Figure()   
 
         fig.add_trace(go.Scatter(
             x = param_data,
             y = bifurcation_data,
             mode = 'markers',
             marker = dict(
-                size = 2,
-                color = 'blue',
+                size = 6,
+                color = t,
+                colorscale = parent_utils_colormaps.BLUE,
                 opacity = 0.7
             ),
             name = f'{var_names[0]} extrema',
@@ -95,7 +96,10 @@ class BifurcationAnalyzer:
             yaxis_title = f'{var_names[0]}',
             hovermode = 'closest',
             width = 800,
-            height = 600
+            height = 600,
+            paper_bgcolor='rgba(0, 0, 0, 0.5)',
+            plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+            margin=dict(l=40, r=40, t=40, b=40)
         )
 
         return fig
@@ -191,7 +195,10 @@ class BifurcationAnalyzer:
                 yaxis_title = var_names[y_coord],
                 hovermode = 'closest',
                 width = 600,
-                height = 600
+                height = 600,
+                paper_bgcolor='rgba(0, 0, 0, 0.5)',
+                plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+                margin=dict(l=40, r=40, t=40, b=40)
             )
 
             return fig
@@ -252,7 +259,7 @@ class BifurcationAnalyzer:
 
         if np.all(real_parts < 0):
             stability = "Stable (sink)"
-        elif np.all(rea_parts > 0):
+        elif np.all(real_parts > 0):
             stability = "Unstable (source)"
         elif np.any(real_parts > 0) and np.any(real_parts < 0):
             stability = "Saddle point"

@@ -146,7 +146,8 @@ class PhasePortraitPlotter:
                 width=600,
                 widht=500,
                 paper_bgcolor='rgba(0, 0, 0, 0.5)',
-                plot_bgcolor = 'rgba(0, 0, 0, 0.5)'
+                plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+                margin=dict(l=40, r=40, t=40, b=40)
             )
 
             return fig

@@ -93,7 +93,7 @@ class NeuronModel:
     def get_equilibrium_points(self, params):
         """Calculate equilibrium points analytically where possible"""
         if self.model_type == 'fitzhugh_nagumo':
-            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
+            a, b, tau, I = params['a'], params['b'], params['tau'], params['J']
             return []
         
         elif self.model_type == 'wilson_cowan':

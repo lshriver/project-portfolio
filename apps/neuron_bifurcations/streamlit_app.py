@@ -26,6 +26,14 @@ spec.loader.exec_module(parent_utils_style)
 parent_utils_style.load_custom_css()
 parent_utils_style.apply_background("static/images/wisp.jpg")
 
+colormaps_path = os.path.abspath(
+  os.path.join(os.path.dirname(__file__),
+               "..", "..", "utils", "colormaps.py")
+)
+colormaps_spec = importlib.util.spec_from_file_location("parent_utils_colormaps", colormaps_path)
+parent_utils_colormaps = importlib.util.module_from_spec(colormaps_spec)
+colormaps_spec.loader.exec_module(parent_utils_colormaps)
+
 # Configure page
 st.set_page_config(
   page_title = "Neuron Dynamics Visualizer",
@@ -40,8 +48,13 @@ if 'selected_model' not in st.session_state:
 
 def main():
   st.markdown("<h1> 🧠 <span class='gradient_text1'> Neuron Dynamics Visualizer </span> </h1>", unsafe_allow_html=True)
-  st.markdown("<span class='gradient_text1'>Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization</span>", unsafe_allow_html=True)
-
+  st.markdown("<div class='feature-box'> \
+                  <div class='feature-box-content'> \
+                    <p class='gradient_text1'> \
+                      Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization \
+                    </p>  \
+                  </div>  \
+                </div>", unsafe_allow_html=True)
 
   # Sidebar for model selection and parameters
   with st.sidebar: 
@@ -191,8 +204,269 @@ def main():
       )
 
   with tab2:
-    st.markdown("<h2 class='gradient_text2'>Neural Bifurcation Analysis)</h2>")
+    st.markdown("<h2 class='gradient_text2'>Neural Bifurcation Analysis</h2>", unsafe_allow_html=True)
+    st.markdown("<div class='feature-box'> \
+                  <div class='feature-box-content'> \
+                    <p class='gradient_text1'> \
+                      Analyze how neural dynamics change as parameters vary. This is crucial for understanding excitability thresholds, oscillatory behavior, and transitionts between firing patterns. \
+                    </p>  \
+                  </div>  \
+                </div>", unsafe_allow_html=True)
+
+    # Bifurcation parameter selection
+    param_names = list(params.keys())
+    if param_names:
+      bifurcation_param = st.selectbox("Select Bifurcation Parameter", param_names)
+
+      col1, col2 = st.columns(2)
+      with col1:
+        param_min = st.number_input(
+          f"Minimum {bifurcation_param}",
+          value=max(0.01, params[bifurcation_param] - 2)
+        )    
+      with col2:
+        param_max = st.number_input(
+          f"Maximum {bifurcation_param}",
+          value=params[bifurcation_param] + 2
+        )
+
+      num_param_points = st.slider("Parameter resolution", 50, 500, 150)
+
+      if st.button("Generate Bifurcation Diagram"):
+        with st.spinner("Computing neural bifurcation diagram..."):
+          analyzer = BifurcationAnalyzer(neuron_model)
+
+          # Create modified params for bifurcation analysis
+          bifurcation_params = params.copy()
+          fig_bifurcation = analyzer.plot_bifurcation_diagram(
+            bifurcation_params,
+            bifurcation_param,
+            param_min,
+            param_max,
+            num_param_points,
+            initial_conditions[0] if initial_conditions else [1, 1],
+            t_max
+          )
+
+          st.plotly_chart(fig_bifurcation, use_container_width=True)
+
+          # Add interpretation for neural model context
+          st.markdown("<h4 class='gradient_text1'>Interpretation</h4>", unsafe_allow_html=True)
+          if selected_key == 'fitzhugh_nagumo':
+            st.write("Look for trasitions between excitable (single stable point) and oscilaltory (limit cycle) regimes.")
+          elif selected_key == 'hodgkin_huxley':
+            st.write("Observe threshold behavior and transitions to repetitive spiking.")
+          elif selected_key == 'morris_lecar':
+            st.write("Morris-Lecar shows rich bifurcation structure including saddle-node and Hopf bifurcations.")
+          elif selected_key =='izhikevich':
+            st.write("Different parameter regions produce various neural firing patterns (regular, bursting, chattering, etc.).")
+          elif selected_key == 'wilson_cowan':
+            st.write("Population dynamics can show multistability and osicllations.")
+          else:
+            st.write("Bifurcation diagram shows paramete regimes with different dynamical behaviors.")
+
+    # Neural excitability analysis
+    st.markdown("<h2 class='gradient_text1'>Excitability Analysis</h2>", unsafe_allow_html=True)
+    if st.button("Analyze Neural Excitability"):
+      with st.spinner("Analyzing neural excitability..."):
+        # Test response to brief current pulses
+        t_pulse = np.linspace(0, 50, 2000)
+        pulse_amplitudes = np.linspace(0, params.get('J', 1) * 3, 20)
+
+        fig_excitability =go.Figure()
+
+        for i, pulse_amp in enumerate(pulse_amplitudes[::3]):   # Sample every 3rd
+          # Modify current for pulse
+          pulse_params = params.copy()
+          if 'J' in pulse_params:
+            pulse_params['J'] = pulse_amp
+            
+          try:
+            sol_pulse = odeint(
+              lambda y, t: neuron_model.equations(y, t, pulse_params), 
+              initial_conditions[0] if initial_conditions else [-70, 0],
+              t_pulse
+            )
+
+            colors = ["#4C48F2", "#5E17EB", "#EB0FD5", "#FF8855", "#70e000", "#38b000", "#00e8ff", "#2F8DF7"]
+
+            fig_excitability.add_trace(go.Scatter(
+              x=t_pulse,
+              y=sol_pulse[:, 0],    # Voltage, first variable
+              mode='lines',
+              name=f'J={pulse_amp:.2f}',
+              line=dict(
+                width=2,
+                color = colors[i % len(colors)]
+              ),
+            ))
+
+          except:
+            continue
+        
+        fig_excitability.update_layout(
+          title="Neural Response to Current Steps",
+          xaxis_title="Time",
+          yaxis_title=var_names[0],
+          height=400,
+          paper_bgcolor='rgba(0, 0, 0, 0.5)',
+          plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+          margin=dict(l=40, r=40, t=40, b=40)
+        )
+        st.plotly_chart(fig_excitability, use_container_width=True)
+
+  with tab3:
+    st.markdown("<h3 class='gradient_text1'>Spike Train Analysis</h3>", unsafe_allow_html=True)
+    st.markdown("<div class='feature-box'> \
+                  <div class='feature-box-content'> \
+                    <p class='gradient_text1'> \
+                      Analysis of neural firing patterns and spike timing. \
+                    </p>  \
+                  </div>  \
+                </div>", unsafe_allow_html=True)
     
+    # Generate longer time series for spike analysis
+    t_long = np.linspace(0, t_max * 2, num_points * 2)
+
+    if st.button("Analyze Spike Patterns"):
+      with st.spinner("Computing spike train analysis..."):
+        try:
+          sol_long = odeint(
+            lambda y, t: neuron_model.equations(y, t, params),
+            initial_conditions[0] if initial_conditions else [-70, 0],
+            t_long
+          )
+
+          voltage = sol_long[:, 0]
+
+          # Detect spikes (simple threshold corssing)
+          threshold = np.mean(voltage) + 2 * np.std(voltage)
+          spike_times = []
+
+          for i in range(1, len(voltage)):
+            if voltage[i-1] < threshold and voltage[i] >= threshold:
+              spike_times.append(t_long[i])
+
+          colormap_blue = ["#00e8ff", "#14b5ff", "#3a98ff", "#0070eb"]
+
+          # Plot voltage trace with spike detection
+          fig_spikes = go.Figure()
+          fig_spikes.add_trace(go.Scatter(
+            x=t_long,
+            y=voltage,
+            mode='lines',
+            name='Membrane potential',
+            line=dict(
+              color = colormap_blue[i % len(colormap_blue)],
+              width=2
+            )
+          ))
+
+          # Mark spike times
+          if spike_times:
+            fig_spikes.add_trace(go.Scatter(
+              x=spike_times,
+              y=[threshold] * len(spike_times),
+              mode='markers',
+              name='Spikes',
+              marker=dict(
+                color = "#38b000", size=8, symbol='triangle-up'
+              )
+            ))
+
+          fig_spikes.add_hline(y=threshold, line_dash="dash", line_color="#0070eb",
+                              annotation_text=f"Threshold = {threshold:.1f}")
+          
+          fig_spikes.update_layout(
+            title="Spike Detection",
+            xaxis_title="Time",
+            yaxis_title=var_names[0],
+            height=400,
+            paper_bgcolor='rgba(0, 0, 0, 0.5)',
+            plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+            margin=dict(l=40, r=40, t=40, b=40)
+          )
+
+          st.plotly_chart(fig_spikes, use_container_width=True)
+
+          # Spike  statistics
+          if len(spike_times) > 1:
+            isi = np.diff(spike_times)    # Inter-spike intervals
+            firing_rate = len(spike_times) / (t_long[-1] - t_long[0]) * 1000  # Hz
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+              st.metric("Number of Spikes", len(spike_times))
+            with col2:
+              st.metric("Firing Rate", f"{firing_rate:.1f} Hz")
+            with col3:
+              st.metric("Mean ISI", f"{np.mean(isi):.2f} ms")
+
+            # ISI histogram
+            if len(isi) > 2:
+              fig_isi = go.Figure(
+                data=go.Histogram(x=isi, nbinsx=20)
+              )
+              fig_isi.update_layout(
+                title="Inter-Spike Interval Distribution",
+                xaxis_title="ISI (ms)",
+                yaxis_title="Count",
+                height=300,
+                paper_bgcolor='rgba(0, 0, 0, 0.5)',
+                plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+                margin=dict(l=40, r=40, t=40, b=40)
+              )
+              st.plotly_chart(fig_isi, use_container_width=True)
+          else:
+            st.info("No spikes detected or insufficient spikes for analysis.")
+          
+        except Exception as e:
+          st.error(f"Error in spike analysis: {str(e)}")  
+
+  with tab4:
+    st.markdown("<h2 class='gradient_text1'>Neural Model Informaiton</h2>", unsafe_allow_html=True)
+
+    # Display model equations
+    st.markdown("<h3 class='gradient_text2'>Current Parameters</h3>", unsafe_allow_html=True)
+    equations_latex = neuron_model.get_equations_latex()
+    for eq in equations_latex:
+      st.latex(eq)
+
+    # Model description
+    st.markdown("<h3 class='gradient_text1'>Model Description</h3>", unsafe_allow_html=True)
+    description = neuron_model.get_description()
+    st.write(description)
+
+    # Neural model specific information
+    st.markdown("<h3 class='gradient_text1'>Neurobiological Context</h3>", unsafe_allow_html=True)
+    if selected_key == 'fitzhugh_nagumo':
+      st.write("**Variables:** $V$ = membrane potential, $W$=recovery variable")
+      st.write("**Key Features:** Simplified neuron model showing excitability and oscillations")
+    elif selected_key == 'hodgkin-huxley':
+      st.write("**Variables:** $V$ = membrane potential (mV), $n$ = potassium ion channel activation")
+      st.write("**Key Features:** Classical model for action potential generation")
+    elif selected_key == 'morris_lecar':
+      st.write("**Variables:** $V$ = membrane potential (mV), $W$ = potassium ion channel activation")
+      st.write("**Key Features:** calcium ion and potassium ion channel dynamics, rich bifiurcation structure")
+    elif selected_key == 'izhikevich':
+      st.write("**Variables:** $v$ membrane potential (mV), $u$= recovery variable")
+      st.write("**Key Features:** Efficient model reproducitng various firing patterns")
+    elif selected_key == 'wilson_cowan':
+      st.write("**Variables:** $E$ = excitatory activity, $I$ = inhibitory activity")
+      st.write("**Key Features:** Neural population dynamics, oscillations and waves")
+    elif selected_key == 'integrate_fire':
+      st.write("**Variables:** $V$ = membrane potential (mV), w = adaptation current (nA)")
+      st.write("**Key Features:** Spike-frequency adaptation and realistic firing patterns")
+
+    # Equilibrium points (if available)
+    if hasattr(neuron_model, 'get_equilibrium_points'):
+      st.markdown("<h2 class='gradient_text1'>Equilibrium Points</h2>", unsafe_allow_html=True)
+      eq_points = neuron_model.get_equilibrium_points(params)
+      if eq_points:
+        for i, point in enumerate(eq_points):
+          st.write(f"Equilibrium {i+1}: {point}")
+      else:
+        st.write("Equilibrium points require numerical computation for this model.")
 
   parent_utils_style.load_footer()
 
