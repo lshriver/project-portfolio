@@ -245,7 +245,10 @@ class TrajectoryPlotter:
                 yaxis_title="Value",
                 hovermode='x unified',
                 width=600,
-                height=500
+                height=500,
+                paper_bgcolor='rgba(0, 0, 0, 0)',
+                #plot_bgcolor = 'rgba(0, 0, 0, 0)',
+                margin=dict(l=40, r=40, t=40, b=40)
             )
             return fig
         
