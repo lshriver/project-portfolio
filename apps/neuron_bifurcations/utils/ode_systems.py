@@ -47,14 +47,14 @@ class NeuronModel:
     def setup_hodgkin_huxley(self):
         """Simplified Hodgkin-Huxley model (2D reduction)"""
         self.parameters = {
-            'g_Na': (120.0, (50.0, 200.0), 'Sodium conductance $g_{Na} \ \mathrm{(mS/cm^2)}$'),
-            'g_K': (36.0, (10.0, 80.0), 'Potassium conductance $g_K \ \mathrm{(mS/cm^2)}$'),
-            'g_L': (0.3, (0.1, 1.0), 'Leak conductance $g_L \ \mathrm{(mS/cm^2)}$'),
-            'E_Na': (50.0, (40.0, 60.0), 'Sodium reversal potential $E_{Na} \ \mathrm{(mV)}$'),
-            'E_K': (-77.0, (-90.0, -60.0), 'Potassium reversal potential $E_{K} \ \mathrm{(mV)}$'),
-            'E_L': (-54.4, (-70.0, -40.0), 'Leak reversal potential $E_{L} \ \mathrm{(mV)}$'),
-            'I': (10.0, (-50.0, 100.0), 'Applied current $I \ \mathrm{(\mu A/cm^2)}$'),
-            'C': (1.0, (0.5, 2.0), 'Membrane capacitance $C \ \mathrm{(\mu F/cm^2)}$')
+            'g_Na': (120.0, (50.0, 200.0), '$g_{Na} \ \mathrm{(mS/cm^2)}$ - Sodium conductance'),
+            'g_K': (36.0, (10.0, 80.0), '$g_K \ \mathrm{(mS/cm^2)}$ - Potassium conductance'),
+            'g_L': (0.3, (0.1, 1.0), '$g_L \ \mathrm{(mS/cm^2)}$ - Leak conductance'),
+            'E_Na': (50.0, (40.0, 60.0), '$E_{Na} \ \mathrm{(mV)}$ Sodium reversal potential'),
+            'E_K': (-77.0, (-90.0, -60.0), '$E_{K} \ \mathrm{(mV)}$ Potassium reversal potential'),
+            'E_L': (-54.4, (-70.0, -40.0), '$E_{L} \ \mathrm{(mV)}$ Leak reversal potential'),
+            'I': (10.0, (-50.0, 100.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current'),
+            'C': (1.0, (0.5, 2.0), '$C \ \mathrm{(\mu F/cm^2)}$ - Membrane capacitance')
         }
         self.variable_names = ['V', 'n']
         self.description = """
@@ -69,6 +69,30 @@ class NeuronModel:
 
     def setup_morris_lecar(self):
         """Morris-Lecar neuron model: voltage-gated calcium and potassium"""
+        self.parameters = {
+            'g_Ca': (4.4, (1.0, 10.0), '$g_{Ca} \ \mathrm{(mS/cm^2)}$ - Calcium conductance'),
+            'g_K': (8.0, (2.0, 20.0), '$g_K \ \mathrm{(mS/cm^2)}$ - Potassium conductance'),
+            'g_L': (2.0, (0.5, 5.0), '$g_L \ \mathrm{(mS/cm^2)}$ - Leakage conductance'),
+            'E_Ca': (120.0, (100.0, 140.0), '$E_{Ca} \ \mathrm{(mV)}$ - Calcium reversal potential'),
+            'E_K': (-84.0, (-100.0, -70.0), '$E_K \ \mathrm{(mV)}$ - Potassium reversal potential'),
+            'E_L': (-60.0, (-80.0, -40.0), '$E_L \ \mathrm{(mV)}$ - Leak reversal potential'),
+            'phi': (0.04, (0.01, 0.1), '$\phi$ - Temperature factor'),
+            'V1': (-1.2, (-10.0, 10.0), '$V_1 \ \mathrm{(mV)}$ - Half-activation voltage'),
+            'V2': (18.0, (10.0, 30.0), '$V_2 \ \mathrm{(mV)}$ - Activation slope'),
+            'V3': (2.0, (-10.0, 20.0), '$V_3 \ \mathrm{(mV)}$ - Half-inactivation voltage'),
+            'V4': (30.0, (15.0, 50.0), '$V_4 \ \mathrm{(mV)}$ - Inactivation slope'),
+            'I': (40.0, (-100.0, 200.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current')
+        }
+        self.variable_names = ['V', 'W']
+        self.description = """
+        - Morris-Lecar model describes voltage-gated calcium and potassium dynamics. 
+        - $V$ is membrane potential, $W$ is potassium channel activation.
+        - Exibits oscillatory behavior.
+        """
+        self.equations_latex = [
+            r"\frac{dV}{dt} = I - g_{Ca}m_{\infty}(V- E_{Ca} - g_K W (V-E_K) - g_L(V-E_L)",
+            r"\frac{dW}{dt} = \phi \frac{w_\infty (V) - W}{\tau_w(V)}"
+        ]
 
     def setup_izhikevich(self):
         """Nzhikevich neuron model: efficient spiking model"""
@@ -115,7 +139,31 @@ class NeuronModel:
                 (I - I_Na - I_K - I_L) / C,
                 alpha_n * (1 - n) - beta_n *n
             ]
-        
+        elif self.model_type == 'morris_lecar':
+            V, W = state
+            g_Ca, g_K, g_L = params['g_Ca'], params['g_K'], params['g_L']
+            E_Ca, E_K, E_L = params['E_Ca'], params['E_K'], params['E_L']
+            phi, V1, V2, V3, V4 = params['phi'], params['V1'], params['V2'], params['V3'], params['V4']
+            I = params['I']
+
+            # Gating functions
+            m_inf = 0.5 * (1 + np.tanh((V - V1) / V2))
+            w_inf = 0.5 * (1 + np.tanh((V - V3) / V4))
+            tau_w = 1 / np.cosh((V - V3) / (2 * V4))
+
+            return [
+                I - g_Ca * m_inf * (V - E_Ca) - g_K * W * (V - E_K) - g_L * (V - E_L),
+                phi * (w_inf - W) / tau_w
+            ]
+        elif self.model_type == 'izhikevich':
+            v, u = state
+            a, b, I = params['a'], params['b'], params['I']
+
+            return [
+                0.04 * v**2 + 5*v + 140 - u + I,
+                a * (b*v - u)
+            ]
+
         else:
             raise ValueError(f"Unknown neruon model type: {self.model_type}")
         

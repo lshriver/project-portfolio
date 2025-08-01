@@ -67,10 +67,10 @@ def main():
     model_options = {
       'fitzhugh_nagumo': 'FitzHugh-Nagumo',
       'hodgkin_huxley': 'Hodgkin-Huxley (simplified)',
-      'morris-lecar': 'Morris-Lecar',
+      'morris_lecar': 'Morris-Lecar',
       'izhikevich': 'Izhikevich',
       'wilson_cowan': 'Wilson-Cowan',
-      'integrate-fire': 'Integrate-and-Fire (Adaptive)'
+      'integrate_fire': 'Integrate-and-Fire (Adaptive)'
     }
 
     selected_key = st.selectbox("Select Neuron Model", options=list(model_options.keys()),
