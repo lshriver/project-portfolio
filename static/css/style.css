@@ -29,6 +29,7 @@
         linear-gradient(
             to right bottom, var(--jade_green), var(var(--blue4))
         );
+    --gradient1: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
 }
 
 * {

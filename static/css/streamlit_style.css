@@ -119,21 +119,29 @@
     box-shadow: 0 0 8px rgba(20, 181, 255, 0.7);
 }
 
+.stButton > button,
+.stDownloadButton > button {
+  width: 350px !important;    /* pick your desired width */
+  /* or use width: auto !important; to fit the text+padding exactly */
+  margin: 0 auto !important;  /* keep them centered */
+  padding: 0.5rem 1rem !important;  /* tweak left/right padding */
+}
+
 /* Button Styling */
-.btn, .stButton button, button {
+.stButton > button, .stDownloadButton > button {
     background-image: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
-    box-shadow: 0 4px 15px 0 rgba(39, 170, 255, 0.5);
+    box-shadow: 0 4px 15px 0 rgba(112, 102, 255, 0.5) !important;
     width: 100%;
     font-size: 16px;
     font-weight: 600;
     color: white;
     cursor: pointer;
-    margin: 10px auto;
-    height: 3px;
+    margin: 0px auto;
+    height: 45px;
     text-align: center;
     border: none;
     background-size: 300% 100%;
-    border-radius: 5px;
+    border-radius: 50px;
     transition: all .4s ease-in-out;
     font-family: 'Aclonica', sans-serif;
     display: block;
@@ -142,7 +150,7 @@
 }
 
 /* Button hover effects */
-.btn:hover, .stButton button:hover, button:hover {
+.stButton > button:hover, .stDownloadButton > button:hover {
     background-position: 100% 0;
     background-image: linear-gradient(to right, #00e8ff, #0070eb);
     filter: brightness(1.1);

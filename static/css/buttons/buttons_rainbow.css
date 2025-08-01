@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+.btn,
+button {
+  padding: 0.5rem 1rem !important;  /* tweak left/right padding */
+}
+
 .buttons {
     margin: 2rem auto;
     text-align: center;
@@ -12,7 +17,7 @@
 .btn {
     text-align: center;
     box-shadow: 0 4px 15px 0 rgba(56, 152, 255, 0.5);
-    width: 85%;
+    width: 100%;
     font-size: 18px;
     font-weight: 700;
     margin: 10px auto;
