@@ -28,10 +28,10 @@ class NeuronModel:
     def setup_fitzhugh_nagumo(self):
         """FitzHugh-Nagumo neruon model: Simplified Hodgkin-Huxley"""
         self.parameters = {
-            'a': (0.7, (0.1, 2.0), 'Recovery variable parameter'),
-            'b': (0.8, (0.1, 2.0), 'Recovery variable parameter'),
-            'tau': (12.5, (1.0, 50.0), 'Recovery time constant'),
-            'J': (0.5, (-2.0, 3.0), 'Applied Current')
+            'a': (0.7, (0.1, 2.0), 'Recovery variable parameter $a$'),
+            'b': (0.8, (0.1, 2.0), 'Recovery variable parameter $b$'),
+            'tau': (12.5, (1.0, 50.0), 'Recovery time constant $\tau$'),
+            'J': (0.5, (-2.0, 3.0), 'Applied Current $J$')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -47,14 +47,14 @@ class NeuronModel:
     def setup_hodgkin_huxley(self):
         """Simplified Hodgkin-Huxley model (2D reduction)"""
         self.parameters = {
-            'g_Na': (120.0, (50.0, 200.0), 'Sodium conductance $g_Na \mathrm{(mS/cm^2)}$'),
-            'g_K': (36.0, (10.0, 80.0), 'Potassium conductance $g_K \mathrm{(mS/cm^2)}$'),
-            'g_L': (0.3, (0.1, 1.0), 'Leak conductance $g_L \mathrm{(mS/cm^2)}'),
-            'E_Na': (50.0, (40.0, 60.0), 'Sodium reversal potential $E_{Na} \mathrm{(mV)}'),
-            'E_K': (-77.0, (-90.0, -60.0), 'Potassium reversal potential $E_{K} \mathrm{(mV)}'),
-            'E_L': (-54.4, (-70.0, -40.0), 'Leak reversal potential $E_{L} \mathrm{(mV)}'),
-            'I': (10.0, (-50.0, 100.0), 'Applied current $I \mathrm{(\mu A/cm^2)}$'),
-            'C': (1.0, (0.5, 2.0), 'Membrane capacitance $C \mathrm{(\mu F/cm^2)}$')
+            'g_Na': (120.0, (50.0, 200.0), 'Sodium conductance $g_{Na} \ \mathrm{(mS/cm^2)}$'),
+            'g_K': (36.0, (10.0, 80.0), 'Potassium conductance $g_K \ \mathrm{(mS/cm^2)}$'),
+            'g_L': (0.3, (0.1, 1.0), 'Leak conductance $g_L \ \mathrm{(mS/cm^2)}$'),
+            'E_Na': (50.0, (40.0, 60.0), 'Sodium reversal potential $E_{Na} \ \mathrm{(mV)}$'),
+            'E_K': (-77.0, (-90.0, -60.0), 'Potassium reversal potential $E_{K} \ \mathrm{(mV)}$'),
+            'E_L': (-54.4, (-70.0, -40.0), 'Leak reversal potential $E_{L} \ \mathrm{(mV)}$'),
+            'I': (10.0, (-50.0, 100.0), 'Applied current $I \ \mathrm{(\mu A/cm^2)}$'),
+            'C': (1.0, (0.5, 2.0), 'Membrane capacitance $C \ \mathrm{(\mu F/cm^2)}$')
         }
         self.variable_names = ['V', 'n']
         self.description = """

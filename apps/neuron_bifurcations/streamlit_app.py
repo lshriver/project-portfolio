@@ -90,7 +90,7 @@ def main():
     params = {}
     for param_name, (default_val, param_range, description) in neuron_model.get_parameters().items():
       params[param_name] = st.slider(
-        rf"${param_name}$ - {description}",
+        rf"{description}",
         min_value=param_range[0],
         max_value=param_range[1],
         value=default_val,
@@ -442,7 +442,7 @@ def main():
     if selected_key == 'fitzhugh_nagumo':
       st.write("**Variables:** $V$ = membrane potential, $W$=recovery variable")
       st.write("**Key Features:** Simplified neuron model showing excitability and oscillations")
-    elif selected_key == 'hodgkin-huxley':
+    elif selected_key == 'hodgkin_huxley':
       st.write("**Variables:** $V$ = membrane potential (mV), $n$ = potassium ion channel activation")
       st.write("**Key Features:** Classical model for action potential generation")
     elif selected_key == 'morris_lecar':
