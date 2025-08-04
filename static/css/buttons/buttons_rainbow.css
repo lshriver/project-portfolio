@@ -42,10 +42,10 @@ button {
 }
 
 /* Style for text inside buttons */
-.btn span, 
-.btn a, 
-.btn p,
-.btn div {
+.btn > span, 
+.btn > a, 
+.btn > p,
+.btn > div {
     display: inline-block;
     width: 100%;
     text-align: center;

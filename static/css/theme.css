@@ -182,3 +182,15 @@ dl.math-definition dd {
 .mjx-math * {
     font-family: serif !important;
 }
+
+/* Emoji stuff */
+p span.emoji,
+h1 span.emoji {
+    background: none !important;
+    color: initial !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    font-style: normal;
+    text-shadow: none;
+    display: inline-block;
+}

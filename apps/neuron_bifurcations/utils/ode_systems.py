@@ -70,6 +70,7 @@ class NeuronModel:
     def setup_morris_lecar(self):
         """Morris-Lecar neuron model: voltage-gated calcium and potassium"""
         self.parameters = {
+            'C': (20.0, (1.0, 100.0), '$C \\ \mathrm{(\\mu F/cm^2)}$ - Membrane capacitance'),
             'g_Ca': (4.4, (1.0, 10.0), '$g_{Ca} \ \mathrm{(mS/cm^2)}$ - Calcium conductance'),
             'g_K': (8.0, (2.0, 20.0), '$g_K \ \mathrm{(mS/cm^2)}$ - Potassium conductance'),
             'g_L': (2.0, (0.5, 5.0), '$g_L \ \mathrm{(mS/cm^2)}$ - Leakage conductance'),
@@ -90,9 +91,10 @@ class NeuronModel:
         - Exibits oscillatory behavior.
         """
         self.equations_latex = [
-            r"\frac{dV}{dt} = I - g_{Ca}m_{\infty}(V- E_{Ca} - g_K W (V-E_K) - g_L(V-E_L)",
-            r"\frac{dW}{dt} = \phi \frac{w_\infty (V) - W}{\tau_w(V)}"
-        ]
+            r"C\frac{dV}{dt} = I - g_{Ca}\,m_{\infty}(V)\,(V- E_{Ca})"
+            r" - g_K\,W\,(V-E_K) - g_L\,(V-E_L)",
+            r"\frac{dW}{dt} = \frac{w_{\infty}(V) - W}{\tau_w(V)}"
+        ]   
 
     def setup_izhikevich(self):
         """Izhikevich neuron model: efficient spiking model"""
@@ -203,20 +205,27 @@ class NeuronModel:
         
         elif self.model_type == 'morris_lecar':
             V, W = state
+            C = params['C']
             g_Ca, g_K, g_L = params['g_Ca'], params['g_K'], params['g_L']
             E_Ca, E_K, E_L = params['E_Ca'], params['E_K'], params['E_L']
             phi, V1, V2, V3, V4 = params['phi'], params['V1'], params['V2'], params['V3'], params['V4']
-            I = params['I']
+            I_app = params['I']  # could be a function of t
 
-            # Gating functions
+            # Steady-state curves
             m_inf = 0.5 * (1 + np.tanh((V - V1) / V2))
             w_inf = 0.5 * (1 + np.tanh((V - V3) / V4))
-            tau_w = 1 / np.cosh((V - V3) / (2 * V4))
+            # Time constant
+            tau_w = 1 / (phi * np.cosh((V - V3) / (2 * V4)))
 
-            return [
-                I - g_Ca * m_inf * (V - E_Ca) - g_K * W * (V - E_K) - g_L * (V - E_L),
-                phi * (w_inf - W) / tau_w
-            ]
+            # Ionic currents 
+            I_Ca = g_Ca * m_inf * (V - E_Ca)
+            I_K = g_K * W * (V - E_K)
+            I_L = g_L * (V - E_L)
+
+            dVdt = (I_app - I_Ca - I_K - I_L) / C
+            dWdt = (w_inf - W) / tau_w
+
+            return [dVdt, dWdt]
         
         elif self.model_type == 'izhikevich':
             v, u = state

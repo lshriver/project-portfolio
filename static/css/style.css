@@ -56,8 +56,6 @@ html, body, [class*=css] {
     padding-top: 60px;
 }
 
-
-
 /* Add semi-transparent overlay for better content visibility */
 .main::before {
     content: "";
