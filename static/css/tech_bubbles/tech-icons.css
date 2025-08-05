@@ -99,8 +99,8 @@
     content: "📊"; /* Data Analysis */
 }
 
-.tech-icon[data-tech="ai"]:before {
-    content: "🧠"; /* AI */
+.tech-icon[data-tech="neuroscience"]:before {
+    content: "🧠"; /* Neuroscience */
 }
 
 .tech-icon[data-tech="clifford"]:before {
@@ -115,8 +115,8 @@
     content: "📐"; /* Mathematics */
 }
 
-.tech-icon[data-tech="finance"]:before {
-    content: "💰"; /* Finance */
+.tech-icon[data-tech="nonlinear_dynamics"]:before {
+    content: "🌀"; /* Nonlinear ODEs */
 }
 
 .tech-icon[data-tech="science"]:before {
