@@ -82,7 +82,7 @@ class NeuronModel:
             'V2': (18.0, (10.0, 30.0), '$V_2 \ \mathrm{(mV)}$ - Activation slope'),
             'V3': (2.0, (-10.0, 20.0), '$V_3 \ \mathrm{(mV)}$ - Half-inactivation voltage'),
             'V4': (30.0, (15.0, 50.0), '$V_4 \ \mathrm{(mV)}$ - Inactivation slope'),
-            'I': (40.0, (-100.0, 200.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current')
+            'I': (130.0, (30.0, 250.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -214,6 +214,7 @@ class NeuronModel:
             # Steady-state curves
             m_inf = 0.5 * (1 + np.tanh((V - V1) / V2))
             w_inf = 0.5 * (1 + np.tanh((V - V3) / V4))
+
             # Time constant
             tau_w = 1 / (phi * np.cosh((V - V3) / (2 * V4)))
 

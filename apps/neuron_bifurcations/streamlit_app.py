@@ -339,7 +339,7 @@ def main():
 
           voltage = sol_long[:, 0]
 
-          # Detect spikes (simple threshold corssing)
+          # Detect spikes (simple threshold crossing)
           threshold = np.mean(voltage) + 2 * np.std(voltage)
           spike_times = []
 
