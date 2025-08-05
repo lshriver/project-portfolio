@@ -122,7 +122,7 @@ html, body, [class*=css] {
 .feature-box {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255. 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 25px;
     margin-bottom: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
