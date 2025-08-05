@@ -28,10 +28,10 @@ class NeuronModel:
     def setup_fitzhugh_nagumo(self):
         """FitzHugh-Nagumo neruon model: Simplified Hodgkin-Huxley"""
         self.parameters = {
-            'a': (0.7, (0.1, 2.0), 'Recovery variable parameter $a$'),
-            'b': (0.8, (0.1, 2.0), 'Recovery variable parameter $b$'),
-            'tau': (12.5, (1.0, 50.0), 'Recovery time constant $\tau$'),
-            'I': (0.5, (-2.0, 3.0), 'Applied Current $J$')
+            'a': (0.7, (0.1, 2.0), '$a$ - recovery variable'),
+            'b': (0.8, (0.1, 2.0), '$b$ - recovery variable'),
+            'tau': (12.5, (1.0, 50.0), '$\\tau$ - recovery time constant'),
+            'I': (0.5, (-2.0, 3.0), '$I$ - applied current')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -40,7 +40,7 @@ class NeuronModel:
         - Shows excitable dynamics and can exhibit spiking behavior.
         """
         self.equations_latex = [
-            r"\frac{dV}{dt} = V - \frac{V^3}{3} - W + J",
+            r"\frac{dV}{dt} = V - \frac{V^3}{3} - W + I",
             r"\frac{dW}{dt} = \frac{1}{\tau}(V + a - bW)"
         ]
 
@@ -82,7 +82,7 @@ class NeuronModel:
             'V2': (18.0, (10.0, 30.0), '$V_2 \ \mathrm{(mV)}$ - Activation slope'),
             'V3': (2.0, (-10.0, 20.0), '$V_3 \ \mathrm{(mV)}$ - Half-inactivation voltage'),
             'V4': (30.0, (15.0, 50.0), '$V_4 \ \mathrm{(mV)}$ - Inactivation slope'),
-            'I': (130.0, (30.0, 250.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current')
+            'I': (130.0, (30.0, 500.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -252,7 +252,7 @@ class NeuronModel:
             def S_I(x):
                 return 1 / (1 + np.exp(-a_I * (x - theta_I)))
             
-            return [
+            returfitzhughn [
                 (-E + S_E(c_EE * E - c_EI * I_pop + P)) / tau_E,
                 (-I_pop + S_I(c_IE * E - c_II * I_pop)) / tau_I
             ]
@@ -294,7 +294,7 @@ class NeuronModel:
     def get_equilibrium_points(self, params):
         """Calculate equilibrium points analytically where possible"""
         if self.model_type == 'fitzhugh_nagumo':
-            a, b, tau, J = params['a'], params['b'], params['tau'], params['I']
+            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
             return []
         
         elif self.model_type == 'wilson_cowan':

@@ -69,8 +69,8 @@ def main():
       'hodgkin_huxley': 'Hodgkin-Huxley (simplified)',
       'morris_lecar': 'Morris-Lecar',
 #      'izhikevich': 'Izhikevich',
-      'wilson_cowan': 'Wilson-Cowan',
-      'integrate_fire': 'Integrate-and-Fire (Adaptive)'
+#      'wilson_cowan': 'Wilson-Cowan',
+#      'integrate_fire': 'Integrate-and-Fire (Adaptive)'
     }
 
     selected_key = st.selectbox("Select Neuron Model", options=list(model_options.keys()),
@@ -118,10 +118,10 @@ def main():
       default_range = [(-80.0, 40.0), (0.0, 1.0)]
 #    elif selected_key == 'izhikevich':
 #      default_range = [(-80, 30), (-20, 20)]
-    elif selected_key == 'wilson_cowan':
-      default_range = [(0.0, 1.0), (0.0, 1.0)]
-    elif selected_key == 'integrate_fire':
-      default_range = [(-80.0, -40.0), (-5.0, 5.0)]
+#    elif selected_key == 'wilson_cowan':
+#      default_range = [(0.0, 1.0), (0.0, 1.0)]
+#    elif selected_key == 'integrate_fire':
+#      default_range = [(-80.0, -40.0), (-5.0, 5.0)]
     else:
       default_range = [(-2.0, 2.0), (-2.0, 2.0)]
 
@@ -266,8 +266,8 @@ def main():
             st.write("Morris-Lecar shows rich bifurcation structure including saddle-node and Hopf bifurcations.")
 #          elif selected_key =='izhikevich':
 #            st.write("Different parameter regions produce various neural firing patterns (regular, bursting, chattering, etc.).")
-          elif selected_key == 'wilson_cowan':
-            st.write("Population dynamics can show multistability and osicllations.")
+#          elif selected_key == 'wilson_cowan':
+#            st.write("Population dynamics can show multistability and osicllations.")
           else:
             st.write("Bifurcation diagram shows paramete regimes with different dynamical behaviors.")
 
@@ -457,12 +457,12 @@ def main():
 #    elif selected_key == 'izhikevich':
 #      st.write("**Variables:** $v$ membrane potential (mV), $u$= recovery variable")
 #      st.write("**Key Features:** Efficient model reproducitng various firing patterns")
-    elif selected_key == 'wilson_cowan':
-      st.write("**Variables:** $E$ = excitatory activity, $I$ = inhibitory activity")
-      st.write("**Key Features:** Neural population dynamics, oscillations and waves")
-    elif selected_key == 'integrate_fire':
-      st.write("**Variables:** $V$ = membrane potential (mV), w = adaptation current (nA)")
-      st.write("**Key Features:** Spike-frequency adaptation and realistic firing patterns")
+#    elif selected_key == 'wilson_cowan':
+#      st.write("**Variables:** $E$ = excitatory activity, $I$ = inhibitory activity")
+#      st.write("**Key Features:** Neural population dynamics, oscillations and waves")
+#    elif selected_key == 'integrate_fire':
+#      st.write("**Variables:** $V$ = membrane potential (mV), w = adaptation current (nA)")
+#      st.write("**Key Features:** Spike-frequency adaptation and realistic firing patterns")
 
     # Equilibrium points (if available)
     if hasattr(neuron_model, 'get_equilibrium_points'):

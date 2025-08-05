@@ -25,3 +25,7 @@ A repository for my portfolio projects.
     - Make sure $V_0$-values are bimodally distributed about -60 mV and 30 mV
 - [ ] Izhikevich Model
     - TBD
+- [ ] Wilson-Cowan Model
+    - TBD
+- [ ] Integrate-and-Fire (Adaptive) Model
+    - TBD
