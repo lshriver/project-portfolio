@@ -156,3 +156,79 @@
     filter: brightness(1.1);
     transition: all .4s ease-in-out;
 }
+
+/* Expander styling */
+/* ———————————————— Reset ———————————————— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ————————————— Expander wrapper ————————————— */
+.st-key-styled_expander {
+  margin-bottom: 1rem;
+}
+
+.st-key-styled_expander summary {
+  list-style: none;               /* remove default arrow */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  margin: 0;                      /* no extra margins */
+  cursor: pointer;
+
+  /* gradient + shadow from your .btn */
+  background-image: linear-gradient(
+    to right bottom,
+    #00e8ff, #14b5ff, #3a98ff, #0070eb
+  );
+  background-size: 300% 100%;
+  background-position: 0 0;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(56,152,255,0.5);
+
+  /* text styling */
+  font-family: 'Aclonica', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  letter-spacing: 0.5px;
+
+  /* smooth hover */
+  transition: background-position 0.4s ease-in-out,
+              box-shadow            0.4s ease-in-out;
+}
+.st-key-styled_expander summary:hover,
+.st-key-styled_expander summary:focus {
+  background-position: 100% 0;
+  outline: none;
+}
+
+/* hide the default triangle */
+.st-key-styled_expander summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ————— expander toggle icon ————— */
+.st-key-styled_expander svg[data-testid="stExpanderToggleIcon"] {
+  fill: #fff;     /* white caret */
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5rem;
+}
+
+/* ————— the open panel ————— */
+.st-key-styled_expander details > div[data-testid="stExpanderDetails"] {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background-color: rgba(0,0,0,0.1);
+  border-radius: .5rem;
+}
+/* white text inside */
+.st-key-styled_expander div[data-testid="stExpanderDetails"] p {
+  color: #fff;
+  margin: .5rem 0;  
+}
