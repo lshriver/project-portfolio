@@ -87,7 +87,7 @@ def main():
 
     # Parameter controls
     st.sidebar.markdown("<h2 class='gradient_text1'>", unsafe_allow_html=True)
-    with st.expander("Model Parameters"):
+    with st.expander("Parameters"):
       params = {}
       for param_name, (default_val, param_range, description) in neuron_model.get_parameters().items():
         params[param_name] = st.slider(
@@ -99,10 +99,15 @@ def main():
         )
     st.sidebar.markdown("</h2>", unsafe_allow_html=True)
     
-    st.sidebar.markdown("<h2 class='gradient_text1'>Model Parameters</h2>", unsafe_allow_html=True)
-    
 
     # Time range
+    st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
+    with st.expander("Time Range"):
+      t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5)
+      num_points = st.slider("Number of points", 100, 5000, 1000, 100)
+    st.sidebar.markdown("</h2>", unsafe_allow_html=True)
+
+    
     st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
     t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5)
     num_points = st.slider("Number of points", 100, 5000, 1000, 100)
