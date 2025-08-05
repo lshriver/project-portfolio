@@ -103,8 +103,10 @@ def main():
 
     # Time range
     st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
-    t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5, key="time_max")
-    num_points = st.slider("Number of points", 100, 5000, 1000, 100, key="num_points")
+    with st.expander("Time Settings"):
+      t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5, key="time_max")
+      num_points = st.slider("Number of points", 100, 5000, 1000, 100, key="num_points")
+    st.sidebar.markdown("</h2>", unsafe_allow_html=True)
 
     # Initial Conditions
     st.sidebar.markdown("<h2 class='gradient_text1'>Initial Conditions</h2>", unsafe_allow_html=True)
