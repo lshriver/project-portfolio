@@ -20,6 +20,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python app.py"
 
+[[workflows.workflow]]
+name = "Run Neuron Bifurcations App"
+author = 37668530
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd apps/neuron_bifurcations && streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
