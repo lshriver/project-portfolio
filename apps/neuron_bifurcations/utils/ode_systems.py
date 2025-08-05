@@ -31,7 +31,7 @@ class NeuronModel:
             'a': (0.7, (0.1, 2.0), 'Recovery variable parameter $a$'),
             'b': (0.8, (0.1, 2.0), 'Recovery variable parameter $b$'),
             'tau': (12.5, (1.0, 50.0), 'Recovery time constant $\tau$'),
-            'J': (0.5, (-2.0, 3.0), 'Applied Current $J$')
+            'I': (0.5, (-2.0, 3.0), 'Applied Current $J$')
         }
         self.variable_names = ['V', 'W']
         self.description = """
@@ -174,9 +174,9 @@ class NeuronModel:
         """
         if self.model_type == 'fitzhugh_nagumo':
             V, W = state
-            a, b, tau, J = params['a'], params['b'], params['tau'], params['J']
+            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
             return [
-                V - V**3/3 - W + J,
+                V - V**3/3 - W + I,
                 (V + a - b*W) / tau
             ]
         
@@ -294,7 +294,7 @@ class NeuronModel:
     def get_equilibrium_points(self, params):
         """Calculate equilibrium points analytically where possible"""
         if self.model_type == 'fitzhugh_nagumo':
-            a, b, tau, I = params['a'], params['b'], params['tau'], params['J']
+            a, b, tau, J = params['a'], params['b'], params['tau'], params['I']
             return []
         
         elif self.model_type == 'wilson_cowan':

@@ -68,7 +68,7 @@ def main():
       'fitzhugh_nagumo': 'FitzHugh-Nagumo',
       'hodgkin_huxley': 'Hodgkin-Huxley (simplified)',
       'morris_lecar': 'Morris-Lecar',
-      'izhikevich': 'Izhikevich',
+#      'izhikevich': 'Izhikevich',
       'wilson_cowan': 'Wilson-Cowan',
       'integrate_fire': 'Integrate-and-Fire (Adaptive)'
     }
@@ -111,36 +111,42 @@ def main():
 
     # Set reasonable default ranges based on neruon model
     if selected_key == 'fitzhugh_nagumo':
-      default_range = [(-3, 3), (-3, 3)]
+      default_range = [(-3.0, 3.0), (-3.0, 3.0)]
     elif selected_key == 'hodgkin_huxley':
-      default_range = [(-80, 20), (0, 1)]
+      default_range = [(-80.0, 20.0), (0.0, 1.0)]
     elif selected_key == 'morris_lecar':
-      default_range = [(-80, 40), (0, 1)]
-    elif selected_key == 'izhikevich':
-      default_range = [(-80, 30), (-20, 20)]
+      default_range = [(-80.0, 40.0), (0.0, 1.0)]
+#    elif selected_key == 'izhikevich':
+#      default_range = [(-80, 30), (-20, 20)]
     elif selected_key == 'wilson_cowan':
-      default_range = [(0, 1), (0, 1)]
+      default_range = [(0.0, 1.0), (0.0, 1.0)]
     elif selected_key == 'integrate_fire':
-      default_range = [(-80, -40), (-5, 5)]
+      default_range = [(-80.0, -40.0), (-5.0, 5.0)]
     else:
-      default_range = [(-2, 2), (-2, 2)]
+      default_range = [(-2.0, 2.0), (-2.0, 2.0)]
 
     if len(var_names) == 2:
       for i in range(num_trajectories):
-        st.write(f"Trajectory {i+1}:")
-        col1, col2 = st.columns(2)
-        with col1:
-          x0 = st.number_input(
-            rf"${var_names[0]}_0$",
-            value=np.random.uniform(default_range[0][0], default_range[0][1]),
-            key = rf"x0_{i}"
-          )
-        with col2:
-          y0 = st.number_input(
-            rf"${var_names[1]}_0$",
-            value=np.random.uniform(default_range[0][0], default_range[0][1]),
-            key = rf"$y0_{i}$"
-          )
+        st.markdown(f"**Trajectory {i+1}**")    
+        
+        col1, col2 = st.sidebar.columns(2)
+
+        x0 = col1.number_input(
+          label = fr"${var_names[0]}_0$",
+          min_value = default_range[0][0],
+          max_value = default_range[0][1],
+          value = float(np.random.uniform(*default_range[0])),
+          key = f"x0_{i}"
+        )
+
+        y0 = col2.number_input(
+          label = rf"${var_names[1]}_0$",
+          min_value = default_range[1][0],
+          max_value = default_range[1][1],
+          value = float(np.random.uniform(*default_range[1])),
+          key = f"y0_{i}"
+        )
+
         initial_conditions.append([x0, y0])
 
   # Main content area
@@ -258,8 +264,8 @@ def main():
             st.write("Observe threshold behavior and transitions to repetitive spiking.")
           elif selected_key == 'morris_lecar':
             st.write("Morris-Lecar shows rich bifurcation structure including saddle-node and Hopf bifurcations.")
-          elif selected_key =='izhikevich':
-            st.write("Different parameter regions produce various neural firing patterns (regular, bursting, chattering, etc.).")
+#          elif selected_key =='izhikevich':
+#            st.write("Different parameter regions produce various neural firing patterns (regular, bursting, chattering, etc.).")
           elif selected_key == 'wilson_cowan':
             st.write("Population dynamics can show multistability and osicllations.")
           else:
@@ -271,15 +277,15 @@ def main():
       with st.spinner("Analyzing neural excitability..."):
         # Test response to brief current pulses
         t_pulse = np.linspace(0, 50, 2000)
-        pulse_amplitudes = np.linspace(0, params.get('J', 1) * 3, 20)
+        pulse_amplitudes = np.linspace(0, params.get('I', 1) * 3, 20)
 
         fig_excitability =go.Figure()
 
         for i, pulse_amp in enumerate(pulse_amplitudes[::3]):   # Sample every 3rd
           # Modify current for pulse
           pulse_params = params.copy()
-          if 'J' in pulse_params:
-            pulse_params['J'] = pulse_amp
+          if 'I' in pulse_params:
+            pulse_params['I'] = pulse_amp
             
           try:
             sol_pulse = odeint(
@@ -294,7 +300,7 @@ def main():
               x=t_pulse,
               y=sol_pulse[:, 0],    # Voltage, first variable
               mode='lines',
-              name=f'J={pulse_amp:.2f}',
+              name=f'I={pulse_amp:.2f}',
               line=dict(
                 width=2,
                 color = colors[i % len(colors)]
@@ -448,9 +454,9 @@ def main():
     elif selected_key == 'morris_lecar':
       st.write("**Variables:** $V$ = membrane potential (mV), $W$ = potassium ion channel activation")
       st.write("**Key Features:** calcium ion and potassium ion channel dynamics, rich bifiurcation structure")
-    elif selected_key == 'izhikevich':
-      st.write("**Variables:** $v$ membrane potential (mV), $u$= recovery variable")
-      st.write("**Key Features:** Efficient model reproducitng various firing patterns")
+#    elif selected_key == 'izhikevich':
+#      st.write("**Variables:** $v$ membrane potential (mV), $u$= recovery variable")
+#      st.write("**Key Features:** Efficient model reproducitng various firing patterns")
     elif selected_key == 'wilson_cowan':
       st.write("**Variables:** $E$ = excitatory activity, $I$ = inhibitory activity")
       st.write("**Key Features:** Neural population dynamics, oscillations and waves")
