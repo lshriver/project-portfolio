@@ -165,12 +165,16 @@
   box-sizing: border-box;
 }
 
-/* ————————————— Expander wrapper ————————————— */
-.st-key-styled_expander {
+/* ————————————— Expander wrapper - target all expanders including sidebar ————————————— */
+.stExpander, .st-key-styled_expander, [data-testid="stSidebar"] .stExpander {
   margin-bottom: 1rem;
 }
 
-.st-key-styled_expander summary {
+/* Target expander summary/header in sidebar and main content */
+.stExpander summary, 
+.st-key-styled_expander summary,
+[data-testid="stSidebar"] .stExpander summary,
+[data-testid="stSidebar"] .stExpander > div:first-child {
   list-style: none;               /* remove default arrow */
   display: flex;
   align-items: center;
@@ -179,7 +183,7 @@
   margin: 0;                      /* no extra margins */
   cursor: pointer;
 
-  /* gradient + shadow from your .btn */
+  /* gradient + shadow matching your dropdown style */
   background-image: linear-gradient(
     to right bottom,
     #00e8ff, #14b5ff, #3a98ff, #0070eb
@@ -188,12 +192,13 @@
   background-position: 0 0;
   border-radius: 50px;
   box-shadow: 0 4px 15px rgba(56,152,255,0.5);
+  border: none;
 
   /* text styling */
-  font-family: 'Aclonica', sans-serif;
+  font-family: 'Aclonica', sans-serif !important;
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: #fff !important;
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
   letter-spacing: 0.5px;
 
@@ -201,34 +206,59 @@
   transition: background-position 0.4s ease-in-out,
               box-shadow            0.4s ease-in-out;
 }
+
+/* Hover effects for all expanders */
+.stExpander summary:hover,
 .st-key-styled_expander summary:hover,
-.st-key-styled_expander summary:focus {
+.st-key-styled_expander summary:focus,
+[data-testid="stSidebar"] .stExpander summary:hover,
+[data-testid="stSidebar"] .stExpander > div:first-child:hover {
   background-position: 100% 0;
   outline: none;
 }
 
 /* hide the default triangle */
-.st-key-styled_expander summary::-webkit-details-marker {
+.stExpander summary::-webkit-details-marker,
+.st-key-styled_expander summary::-webkit-details-marker,
+[data-testid="stSidebar"] .stExpander summary::-webkit-details-marker {
   display: none;
 }
 
-/* ————— expander toggle icon ————— */
-.st-key-styled_expander svg[data-testid="stExpanderToggleIcon"] {
-  fill: #fff;     /* white caret */
+/* ————— expander toggle icon for all expanders ————— */
+.stExpander svg[data-testid="stExpanderToggleIcon"],
+.st-key-styled_expander svg[data-testid="stExpanderToggleIcon"],
+[data-testid="stSidebar"] svg[data-testid="stExpanderToggleIcon"] {
+  fill: #fff !important;     /* white caret */
   width: 1em;
   height: 1em;
   margin-left: 0.5rem;
 }
 
-/* ————— the open panel ————— */
-.st-key-styled_expander details > div[data-testid="stExpanderDetails"] {
+/* ————— the open panel for all expanders ————— */
+.stExpander details > div[data-testid="stExpanderDetails"],
+.st-key-styled_expander details > div[data-testid="stExpanderDetails"],
+[data-testid="stSidebar"] .stExpander details > div[data-testid="stExpanderDetails"] {
   margin-top: 0.5rem;
   padding: 1rem;
   background-color: rgba(0,0,0,0.1);
   border-radius: .5rem;
 }
-/* white text inside */
-.st-key-styled_expander div[data-testid="stExpanderDetails"] p {
+
+/* white text inside all expanders */
+.stExpander div[data-testid="stExpanderDetails"] p,
+.st-key-styled_expander div[data-testid="stExpanderDetails"] p,
+[data-testid="stSidebar"] .stExpander div[data-testid="stExpanderDetails"] p {
   color: #fff;
   margin: .5rem 0;  
+}
+
+/* Ensure sidebar expander content styling matches */
+[data-testid="stSidebar"] .stExpander div[data-testid="stExpanderDetails"] {
+  background-color: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Fix expander text color in sidebar */
+[data-testid="stSidebar"] .stExpander div[data-testid="stExpanderDetails"] * {
+  color: #fff !important;
 }
