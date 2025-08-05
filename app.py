@@ -27,6 +27,10 @@ def home():
 def neural_bifurcations():
     return render_template('projects/neural_bifurcations.html')
 
+@app.route('/projects/thermal-pca')
+def thermal_pca():
+    return render_template('projects/thermal_pca.html')
+
 if __name__ == '__main__':
     ensure_directories()
     app.run(host='0.0.0.0', port=5000, debug=True)
