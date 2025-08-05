@@ -27,3 +27,5 @@ A repository for my portfolio projects.
     - TBD
 - [ ] Integrate-and-Fire (Adaptive) Model
     - TBD
+### Thermo PCA App
+- [ ] Include different energy distributions
