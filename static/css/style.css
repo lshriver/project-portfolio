@@ -27,9 +27,13 @@
         );
     --gradient-green-to-blue:
         linear-gradient(
-            to right bottom, var(--jade_green), var(var(--blue4))
+            to right bottom, var(--jade_green), var(--blue4)
         );
     --gradient1: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
+    --gradient-cyan-to-blue:
+        linear-gradient(
+            to right bottom, var(--cyan), var(--blue3)
+        );
 }
 
 * {
@@ -171,7 +175,7 @@ html, body, [class*=css] {
 .feature-box-content h3 {
     font-weight: bold;
     background: var(--gradient-blue-to-purple);
-    -webkit0background-clip: text;
+    -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
