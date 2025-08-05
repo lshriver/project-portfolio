@@ -95,26 +95,20 @@ def main():
           min_value=param_range[0],
           max_value=param_range[1],
           value=default_val,
-          step=(param_range[1] - param_range[0]) / 100
+          step=(param_range[1] - param_range[0]) / 100,
+          key=f"param_{param_name}"
         )
     st.sidebar.markdown("</h2>", unsafe_allow_html=True)
     
 
     # Time range
     st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
-    with st.expander("Time Range"):
-      t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5)
-      num_points = st.slider("Number of points", 100, 5000, 1000, 100)
-    st.sidebar.markdown("</h2>", unsafe_allow_html=True)
-
-    
-    st.sidebar.markdown("<h2 class='gradient_text1'>Time Configuration</h2>", unsafe_allow_html=True)
-    t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5)
-    num_points = st.slider("Number of points", 100, 5000, 1000, 100)
+    t_max = st.slider("Maximum time", 20.0, 500.0, 100.0, 0.5, key="time_max")
+    num_points = st.slider("Number of points", 100, 5000, 1000, 100, key="num_points")
 
     # Initial Conditions
     st.sidebar.markdown("<h2 class='gradient_text1'>Initial Conditions</h2>", unsafe_allow_html=True)
-    num_trajectories = st.slider("Number of trajectories", min_value=1, value=3, max_value=10)
+    num_trajectories = st.slider("Number of trajectories", min_value=1, value=3, max_value=10, key="num_trajectories")
 
     initial_conditions = []
     var_names = neuron_model.get_variable_names()
@@ -246,7 +240,7 @@ def main():
           value=params[bifurcation_param] + 2
         )
 
-      num_param_points = st.slider("Parameter resolution", 50, 500, 150)
+      num_param_points = st.slider("Parameter resolution", 50, 500, 150, key="param_resolution")
 
       if st.button("Generate Bifurcation Diagram"):
         with st.spinner("Computing neural bifurcation diagram..."):
