@@ -7,3 +7,19 @@ packages = ["arrow-cpp", "cacert", "cairo", "cargo", "chromedriver", "ffmpeg-ful
 
 [deployment]
 run = ["sh", "-c", "streamlit run app.py"]
+
+[workflows]
+runButton = "Run Flask App"
+
+[[workflows.workflow]]
+name = "Run Flask App"
+author = 37668530
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
