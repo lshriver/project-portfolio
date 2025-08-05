@@ -38,6 +38,28 @@
     transition: all 0.4s ease-in-out;
 }
 
+/* Exclude LaTeX math elements from Aclonica font */
+.katex,
+.katex *,
+.MathJax,
+.MathJax *,
+mjx-container,
+mjx-container *,
+.mjx-chtml,
+.mjx-chtml *,
+[class*="katex"],
+[class*="MathJax"] {
+    font-family: "Times New Roman", "Computer Modern", serif !important;
+}
+
+/* Specifically target inline and display math */
+.stMarkdown mjx-container,
+.stMarkdown mjx-container *,
+.stMarkdown .katex,
+.stMarkdown .katex * {
+    font-family: "Times New Roman", "Computer Modern", serif !important;
+}
+
 html, body, [class*=css] {
     margin: 0;
     padding: 0;

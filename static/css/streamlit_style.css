@@ -244,6 +244,18 @@
   border-radius: .5rem;
 }
 
+/* Math font overrides for Streamlit */
+.stMarkdown mjx-container,
+.stMarkdown mjx-container *,
+.stMarkdown .katex,
+.stMarkdown .katex *,
+[data-testid="stMarkdownContainer"] mjx-container,
+[data-testid="stMarkdownContainer"] mjx-container *,
+[data-testid="stMarkdownContainer"] .katex,
+[data-testid="stMarkdownContainer"] .katex * {
+    font-family: "Times New Roman", "Computer Modern", serif !important;
+}
+
 /* white text inside all expanders */
 .stExpander div[data-testid="stExpanderDetails"] p,
 .st-key-styled_expander div[data-testid="stExpanderDetails"] p,
