@@ -21,8 +21,6 @@ A repository for my portfolio projects.
     - Compare actual results to expected
 - [ ] Morris-Lecar Model
     - Check parameter ranges
-    - Make sure $W_0$-values are normally distributed about 0.5 from [0, 1]
-    - Make sure $V_0$-values are bimodally distributed about -60 mV and 30 mV
 - [ ] Izhikevich Model
     - TBD
 - [ ] Wilson-Cowan Model
