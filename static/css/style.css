@@ -2,7 +2,7 @@
  @import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
 
 :root {
-    --lime_green: #ccff33; 
+    --lime_green: #ccff33;
     --light_green: #9ef01a;
     --green1: #70e000;
     --green2: #38bb00;
@@ -20,7 +20,7 @@
     --gradient-light-to-dark-blue:
         linear-gradient(
             to right bottom, var(--blue1), var(--blue5)
-        ); 
+        );
     --gradient-blue-to-purple:
         linear-gradient(
             to right bottom, var(--cyan), var(--purple2)
@@ -46,7 +46,7 @@ html, body, [class*=css] {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; 
+    background-attachment: fixed;
 }
 
 .container {
@@ -71,7 +71,7 @@ html, body, [class*=css] {
 /* Section styles */
 .section {
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255. 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 25px;
     margin-bottom: 30px;
@@ -121,7 +121,7 @@ html, body, [class*=css] {
 /* Feature box styling */
 .feature-box {
     background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255. 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 25px;
     margin-bottom: 20px;
@@ -193,7 +193,7 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .contact-links a:hover {
@@ -256,50 +256,50 @@ a:hover {
     body {
         font-size: 14px;
     }
-    
+
     h1 {
         font-size: 1.8rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
-    
+
     h3 {
         font-size: 1.3rem;
     }
-    
+
     .container {
         padding: 15px;
         padding-top: 40px;
     }
-    
+
     .feature-box {
         padding: 15px;
         margin-bottom: 50px;
     }
-    
+
     .card-row {
         gap: 20px;
     }
-    
+
     .tech-icons {
         gap: 5px;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .tech-icon {
         width: 30px;
         height: 30px;
         font-size: 1rem;
     }
-    
+
     .site-title {
         font-size: 2rem !important;
         padding: 0.5rem !important;
     }
-    
+
     .btn {
         width: 90%;
         max-width: 160px;
@@ -311,26 +311,26 @@ a:hover {
         line-height: 1.2; /* Better line height for text */
         padding: 0 15px; /* Add some horizontal padding */
     }
-    
+
     /* Adjust tooltip for mobile */
     .tooltip-content {
         width: calc(100% - 20px);
         left: 10px;
     }
-    
+
     /* Adjust contact links for mobile */
     .contact-links {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-    
+
     /* Make sure emoji bubbles don't overflow on small screens */
     .emoji-bubbles {
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .emoji-bubble {
         width: 35px;
         height: 35px;
@@ -343,33 +343,33 @@ a:hover {
     body {
         font-size: 13px;
     }
-    
+
     h1 {
         font-size: 1.6rem;
     }
-    
+
     h2 {
         font-size: 1.3rem;
     }
-    
+
     h3 {
         font-size: 1.1rem;
     }
-    
+
     .container {
         padding: 10px;
         padding-top: 30px;
     }
-    
+
     .feature-box {
         padding: 12px;
         margin-bottom: 40px;
     }
-    
+
     .site-title {
         font-size: 1.8rem !important;
     }
-    
+
     .btn {
         width: 92%;
         max-width: 140px;
@@ -378,21 +378,21 @@ a:hover {
         padding: 0 10px; /* Smaller horizontal padding */
         min-height: 36px; /* Ensure minimum height for tappability */
     }
-    
+
     /* Further adjustments for very small screens */
     .tech-icon {
         width: 28px;
         height: 28px;
         font-size: 0.9rem;
     }
-    
+
     .emoji-bubble {
         width: 30px;
         height: 30px;
         font-size: 1.2rem;
         margin: 0 3px;
     }
-    
+
     /* Ensure images don't overflow their containers */
     img {
         max-width: 100%;

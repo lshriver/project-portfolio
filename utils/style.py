@@ -3,13 +3,16 @@ import base64
 import os
 from pathlib import Path
 
-css_files = [
-    Path("static/css/style.css"),
-    Path("static/css/theme.css"),
-    Path("static/css/streamlit_style.css")
-]
-
 def load_custom_css():
+    # Get the project root directory (two levels up from current file)
+    project_root = Path(__file__).parent.parent
+    
+    css_files = [
+        project_root / "static/css/style.css",
+        project_root / "static/css/theme.css", 
+        project_root / "static/css/streamlit_style.css"
+    ]
+    
     for css_file in css_files:
         if css_file.exists():
             st.markdown(f"<style>{css_file.read_text()}</style>", unsafe_allow_html=True)
@@ -21,8 +24,12 @@ def get_img_as_base64(fp: str) -> str:
         return base64.b64encode(f.read()).decode()
     
 def apply_background(image_path: str):
-    if os.path.exists(image_path):
-        img_b64 = get_img_as_base64(image_path)
+    # Resolve path relative to project root
+    project_root = Path(__file__).parent.parent
+    full_image_path = project_root / image_path
+    
+    if full_image_path.exists():
+        img_b64 = get_img_as_base64(str(full_image_path))
         st.markdown(f"""
             <style>
             .stApp {{
@@ -33,7 +40,9 @@ def apply_background(image_path: str):
                 background-position: center;
             }}
             </style>
-        """, unsafe_allow_html=True) 
+        """, unsafe_allow_html=True)
+    else:
+        st.warning(f"Background image not found: {full_image_path}") 
 
 def load_footer(path: str = "templates/footer.html"):
     """Read footer.html and render it at the bottom of the Streamlit app."""
