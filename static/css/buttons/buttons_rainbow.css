@@ -1,158 +1,146 @@
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+/* 1) global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.btn,
-button {
-  padding: 0.5rem 1rem !important;  /* tweak left/right padding */
-}
-
+/* 2) button container helper (if you need centered groups) */
 .buttons {
-    margin: 2rem auto;
-    text-align: center;
+  margin: 10%;
+  text-align: center;
 }
 
+/* 3) base button block */
 .btn {
-    text-align: center;
-    box-shadow: 0 4px 15px 0 rgba(56, 152, 255, 0.5);
-    width: 100%;
-    font-size: 18px;
-    font-weight: 700;
-    margin: 10px auto;
-    height: 45px;
-    border: none;
-    background-size: 300% 100%;
-    border-radius: 50px;
-    transition: all .4s ease-in-out;
-    font-family: 'Aclonica', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-    color: white !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    background-clip: border-box !important;
-    -webkit-background-clip: border-box !important;
-    cursor: pointer;
-    letter-spacing: 0.5px;
+  /* geometry */
+  display: flex;
+  margin: 10px auto;
+  align-items: center;
+  justify-content: center;
+  width: 85%;
+  max-width: 180px;
+  height: 45px;
+  padding: 0.5rem 1rem;
+
+  /* typography */
+  font-family: 'Aclonica', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  line-height: 1;      /* reset any browser default */
+
+  /* border & corners */
+  border: none;
+  border-radius: 50px;
+
+  /* background & shadow via CSS vars */
+  background-image: var(
+    --btn-bg,
+    linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb)
+  );
+  background-size: 300% 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  box-shadow: var(
+    --btn-shadow,
+    0 4px 15px 0 rgba(56, 152, 255, 0.5)
+  );
+
+  /* transitions */
+  transition:
+    background-position 0.4s ease-in-out,
+    box-shadow            0.4s ease-in-out;
+
+  /* pointer */
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
-/* Style for text inside buttons */
-.btn > span, 
-.btn > a, 
-.btn > p,
-.btn > div {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: white !important;
-    background: transparent !important;
-    background-image: none !important;
-    -webkit-background-clip: border-box !important;
-    background-clip: border-box !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    margin: 0;
-    padding: 0;
+/* hover/focus behaviour */
+.btn:hover,
+.btn:focus {
+  background-position: 100% 0;
+  outline: none;
 }
 
-/* Fix for buttons that are themselves links */
-a.btn {
-    color: white !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
+/* if you have inner tags (span, a, etc.) force them to inherit */
+.btn > * {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  width: 100%;
+  text-align: center;
+  color: inherit !important;
+  text-decoration: none;
 }
 
-/* Extra override for links inside buttons to ensure white color */
-.btn > a {
-    color: white !important;
-    text-decoration: none;
+/* 4) colour modifiers */
+/* just add one of these extra classes alongside .btn */
+
+.btn--color-1 {
+  --btn-bg: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+  --btn-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
 }
 
-.btn-hover {
-    display: inline-block;
-    padding: 1.5rem 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff !important;
-    text-align: center;
-    text-decoration: none;
-    background-size: 300% 100%;
-    border: none;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.4s ease-in-out;
-    font-family: 'Aclonica', sans-serif;
-    cursor: pointer;
+.btn--color-2 {
+  --btn-bg: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
+  --btn-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
 }
 
-/* Response scale with media queries */
+.btn--color-3 {
+  --btn-bg: linear-gradient(to right, #667eea, #764ba2, #6b8dd6, #8e37d7);
+  --btn-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
+}
+
+.btn--color-4 {
+  --btn-bg: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
+  --btn-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+}
+
+.btn--color-5 {
+  --btn-bg: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
+  --btn-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+}
+
+.btn--color-6 {
+  --btn-bg: linear-gradient(to right, #009245, #fcee21, #00a8c5, #d9e021);
+  --btn-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
+}
+
+.btn--color-7 {
+  --btn-bg: linear-gradient(to right, #6253e1, #852d91, #a3a1ff, #f24645);
+  --btn-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+}
+
+.btn--color-8 {
+  --btn-bg: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
+  --btn-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+}
+
+.btn--color-9 {
+  --btn-bg: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+  --btn-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+}
+
+.btn--color-10 {
+  --btn-bg: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a, #fbb03b);
+  --btn-shadow: 0 4px 15px 0 rgba(236, 116, 149, 0.75);
+}
+
+.btn--color-11 {
+  --btn-bg: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+  --btn-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+}
+
+/* 5) responsive tweak (optional) */
 @media (max-width: 600px) {
-  .btn-hover {
+  .btn {
     font-size: 0.9rem;
     padding: 0.6rem 1.5rem;
   }
-}
-
-.btn-hover:hover {
-    background-position: 100% 0;
-    -moz-transition: all .4s ease-in-out;
-    -o-transition: all .4s ease-in-out;
-    -webkit-transition: all .4s ease-in-out;
-    transition: all .4s ease-in-out;
-}
-
-.btn-hover:focus {
-    outline: none;
-}
-
-.btn-hover.color-1 {
-    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
-    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
-}
-.btn-hover.color-2 {
-    background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
-    box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
-}
-.btn-hover.color-3 {
-    background-image: linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7);
-    box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
-}
-.btn-hover.color-4 {
-    background-image: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
-    box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
-}
-.btn-hover.color-5 {
-    background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
-    box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
-}
-.btn-hover.color-6 {
-    background-image: linear-gradient(to right, #009245, #FCEE21, #00A8C5, #D9E021);
-    box-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
-}
-.btn-hover.color-7 {
-    background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
-    box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
-}
-.btn-hover.color-8 {
-    background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
-    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
-}
-.btn-hover.color-9 {
-    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
-    box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
-}
-.btn-hover.color-10 {
-        background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a , #FBB03B);
-    box-shadow: 0 4px 15px 0 rgba(236, 116, 149, 0.75);
-}
-.btn-hover.color-11 {
-       background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);  box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
 }
