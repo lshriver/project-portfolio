@@ -105,25 +105,28 @@ class PhasePortraitPlotter:
         used in the vector field, and draw them.
         """
 
-        # Recover the x and y bounds from existing data
-        x_vals = []
-        y_vals = []
-        for tr in fig.data:
-            # Only consider line/scatter that have x,y arrays
-            if hasattr(tr, 'x') and hasattr(tr, 'y') and tr.x is not None and tr.y is not None:
-                x_vals += list(tr.x)
-                y_vals += list(tr.y)
-            if x_vals and y_vals:
-                x_min, x_max = min(x_vals), max(x_vals)
-                y_min, y_max = min(y_vals), max(y_vals)
-            else:
-                x_min, x_max = -3, 3
-                y_min, y_max = -3, 3
+        # Create grid for vector field
+        x_range = [-3, 3]
+        y_range = [-3, 3]
 
-        # Pad them slightly
-        pad = 0.5
-        x_range = [x_min - pad, x_max + pad]
-        y_range = [y_min - pad, x_max + pad]
+        # Try to get better bounds from current traces
+        if fig.data:
+            all_x = []
+            all_y = []
+            for trace in fig.data:
+                if hasattr(trace, 'x') and trace.x is not None:
+                    all_x.extend(trace.x)
+                if hasattr(trace, 'y') and trace.y is not None:
+                    all_y.extend(trace.y)
+
+            if all_x and all_y:
+                x_min, x_max = min(all_x), max(all_x)
+                y_min, y_max = min(all_y), max(all_y)
+
+                # pad slightly
+                pad = 0.5
+                x_range = [x_min - pad, x_max + pad]
+                y_range = [y_min - pad, y_max + pad]
 
         # Ask the neuron_model for its nullclines
         nulls = self.neuron_model.get_nullclines(params, x_range, y_range, num=300)
@@ -258,7 +261,7 @@ class PhasePortraitPlotter:
                     x=[X[j, i], X[j, i] + scale * DX_norm[j, i]],
                     y=[Y[j, i], Y[j, i] + scale * DY_norm[j, i]],
                     mode='lines',
-                    line=dict(color='gray', width=1),
+                    line=dict(color='whitesmoke', width=1),
                     showlegend=False,
                     hoverinfo='skip'
                 ))

@@ -31,36 +31,36 @@ class NeuronModel:
             'a': (0.7, (0.0, 2.0), '$a$ - recovery variable'),
             'b': (0.8, (0.0, 2.0), '$b$ - recovery variable'),
             'tau': (12.5, (1.0, 50.0), '$\\tau$ - recovery time constant'),
-            'I': (0.5, (-2.0, 3.0), '$I$ - applied current')
+            'J': (0.5, (-2.0, 3.0), '$\mathcal{J}$ - analagous to external current')
         }
-        self.variable_names = ['V', 'W']
+        self.variable_names = ['v', 'w']
         self.description = """
         - FitzHugh-Nagumo model is a simplified version of the HH model. 
         - Variables:
-            - $V$ denotes the membrane potential
-            - $W$ denotes the recovery variable
+            - $v$ is a representation of membrane potential
+            - $w$ is a recovery variable and represents sodium channel activation and potassium channel deactivation
         - Setting $a=b=0$ gives the van der Pol oscillator.
         - Shows excitable dynamics and can exhibit spiking behavior.
         """
         self.equations_latex = [
-            r"\frac{dV}{dt} = V - \frac{V^3}{3} - W + RI_\text{ext}",
-            r"\frac{dW}{dt} = \frac{1}{\tau}(V + a - bW)"
+            r"\frac{dv}{dt} = v - \frac{v^3}{3} - w + \mathcal{J}",
+            r"\frac{dw}{dt} = \frac{1}{\tau}(v + a - bw)"
         ]
         self.nullclines_latex = [
-            r"\dot{V} = 0 \Rightarrow W = V - \frac{V^3}{3} - RI_\text{ext}"
-            r"\dot{W} = 0 \Rightarrow W = \frac{V+a}{b}"
+            r"\dot{x} = 0 \Rightarrow w_1 = v - \frac{v^3}{3} - \mathcal{J}"
+            r"\dot{y} = 0 \Rightarrow w_2 = \frac{v+a}{b}"
         ]
 
     def setup_hodgkin_huxley(self):
         """Simplified Hodgkin-Huxley model (2D reduction)"""
         self.parameters = {
-            'g_Na': (120.0, (50.0, 200.0), '$g_{Na} \ \mathrm{(mS/cm^2)}$ - Sodium conductance'),
+            'g_Na': (40.0, (20.0, 75.0), '$g_{Na} \ \mathrm{(mS/cm^2)}$ - Sodium conductance'),
             'g_K': (36.0, (10.0, 80.0), '$g_K \ \mathrm{(mS/cm^2)}$ - Potassium conductance'),
             'g_L': (0.3, (0.1, 1.0), '$g_L \ \mathrm{(mS/cm^2)}$ - Leak conductance'),
-            'E_Na': (50.0, (40.0, 60.0), '$E_{Na} \ \mathrm{(mV)}$ Sodium reversal potential'),
+            'E_Na': (55.0, (40.0, 60.0), '$E_{Na} \ \mathrm{(mV)}$ Sodium reversal potential'),
             'E_K': (-77.0, (-90.0, -60.0), '$E_{K} \ \mathrm{(mV)}$ Potassium reversal potential'),
-            'E_L': (-54.4, (-70.0, -40.0), '$E_{L} \ \mathrm{(mV)}$ Leak reversal potential'),
-            'I': (10.0, (-50.0, 100.0), '$I \ \mathrm{(\mu A/cm^2)}$ - Applied current'),
+            'E_L': (-65.0, (-70.0, -40.0), '$E_{L} \ \mathrm{(mV)}$ Leak reversal potential'),
+            'I': (10.0, (-50.0, 250.0), '$I_\text{ext} \ \mathrm{(\mu A/cm^2)}$ - Applied current'),
             'C': (1.0, (0.5, 2.0), '$C \ \mathrm{(\mu F/cm^2)}$ - Membrane capacitance')
         }
         self.variable_names = ['V', 'n']
@@ -70,7 +70,7 @@ class NeuronModel:
         - Shows excitablity threshoold and spike generation.
         """
         self.equations_latex = [
-            r"\frac{dV}{dt} = \frac{1}{C}[I - g_{Na}m_{\infty}^3(V)(V-E_{Na}) - g_K n^4(V-E_K) - g_L(V-E_L)]",
+            r"\frac{dV}{dt} = \frac{1}{C}\Big[I_\text{ext} - \underbrace{g_{Na}hm_{\infty}^3(V)(V-E_{Na})}_{I_{Na_V}} - \underbrace{g_K n^4(V-E_K)}_{I_{K_V}} - \underbrace{g_L(V-E_L)}_{I_L} \Big]",
             r"\frac{dn}{dt} = \frac{n_{\infty}(V) - n}{\tau_n (V)}"
         ]
 
@@ -180,11 +180,11 @@ class NeuronModel:
             - params: dictionary of parameters
         """
         if self.model_type == 'fitzhugh_nagumo':
-            V, W = state
-            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
+            v, w = state
+            a, b, tau, J = params['a'], params['b'], params['tau'], params['J']
             return [
-                V - V**3/3 - W + I,
-                (V + a - b*W) / tau
+                v - v**3/3 - w + J,
+                (v + a - b*w) / tau
             ]
         
         elif self.model_type == 'hodgkin_huxley':
@@ -259,7 +259,7 @@ class NeuronModel:
             def S_I(x):
                 return 1 / (1 + np.exp(-a_I * (x - theta_I)))
             
-            returfitzhughn [
+            return fitzhughn [
                 (-E + S_E(c_EE * E - c_EI * I_pop + P)) / tau_E,
                 (-I_pop + S_I(c_IE * E - c_II * I_pop)) / tau_I
             ]
@@ -301,7 +301,7 @@ class NeuronModel:
     def get_equilibrium_points(self, params):
         """Calculate equilibrium points analytically where possible"""
         if self.model_type == 'fitzhugh_nagumo':
-            a, b, tau, I = params['a'], params['b'], params['tau'], params['I']
+            a, b, tau, J = params['a'], params['b'], params['tau'], params['J']
             return []
         
         elif self.model_type == 'wilson_cowan':
@@ -338,15 +338,14 @@ class NeuronModel:
 
             a = params['a']
             b = params['b']
-            I = params['I']
-            R = 1.0
-            V = np.linspace(x_range[0], x_range[1], num)
-            W1 = V - V**3/3 + R*I
-            W2 = (V + a)/b
+            J = params['J']
+            v = np.linspace(x_range[0], x_range[1], num)
+            w1 = v - v**3/3 + J
+            w2 = (v + a)/b
 
             return [
-                {'x': V, 'y': W1, 'name': 'V nullcline', 'color': "#14b5ff", 'dash': 'dash'},
-                {'x': V, 'y': W2, 'name': 'W nullcline', 'color': "#38b000", 'dash': 'dot'}
+                {'x': v, 'y': w1, 'name': 'x nullcline', 'color': "#14b5ff", 'dash': 'dash'},
+                {'x': v, 'y': w2, 'name': 'y nullcline', 'color': "#38b000", 'dash': 'dot'}
             ]
         
         # fallback: no analytic nullclines available

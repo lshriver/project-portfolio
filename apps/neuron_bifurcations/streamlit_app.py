@@ -51,7 +51,7 @@ def main():
   st.markdown("<div class='feature-box'> \
                   <div class='feature-box-content'> \
                     <p class='gradient_text1'> \
-                      Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization. \
+                      Interactive analysis of neuronal signaling models with phase portraits, bifurcation plots, and time-series plots. \
                     </p>  \
                   </div>  \
                 </div>", unsafe_allow_html=True)
@@ -115,7 +115,7 @@ def main():
     initial_conditions = []
     var_names = neuron_model.get_variable_names()
 
-    # Set reasonable default ranges based on neruon model
+    # Set reasonable default ranges based on neuron model
     if selected_key == 'fitzhugh_nagumo':
       default_range = [(-3.0, 3.0), (-3.0, 3.0)]
     elif selected_key == 'hodgkin_huxley':
