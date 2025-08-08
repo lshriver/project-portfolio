@@ -99,6 +99,55 @@ class PhasePortraitPlotter:
 
         return fig
     
+    def _add_nullclines_2d(self, fig, params, var_names):
+        """
+        Query the model for its nullclines over the same plotting bounds
+        used in the vector field, and draw them.
+        """
+
+        # Recover the x and y bounds from existing data
+        x_vals = []
+        y_vals = []
+        for tr in fig.data:
+            # Only consider line/scatter that have x,y arrays
+            if hasattr(tr, 'x') and hasattr(tr, 'y') and tr.x is not None and tr.y is not None:
+                x_vals += list(tr.x)
+                y_vals += list(tr.y)
+            if x_vals and y_vals:
+                x_min, x_max = min(x_vals), max(x_vals)
+                y_min, y_max = min(y_vals), max(y_vals)
+            else:
+                x_min, x_max = -3, 3
+                y_min, y_max = -3, 3
+
+        # Pad them slightly
+        pad = 0.5
+        x_range = [x_min - pad, x_max + pad]
+        y_range = [y_min - pad, x_max + pad]
+
+        # Ask the neuron_model for its nullclines
+        nulls = self.neuron_model.get_nullclines(params, x_range, y_range, num=300)
+
+        # Draw each nullcine as a line trace 
+        for n in nulls:
+            # clip to the visible y-range (optional)
+            mask = (n['y'] >= y_range[0]) & (n['y'] <= y_range[1])
+            x_plot = n['x'][mask]; y_plot = n['y'][mask]
+
+            #x_plot, y_plot = n['x'], n['y']
+
+            fig.add_trace(go.Scatter(
+                x = x_plot,
+                y = y_plot,
+                mode = 'lines',
+                name = n['name'],
+                line = dict(color=n['color'],
+                            dash=n['dash'],
+                            width=2),
+                showlegend = True,
+                hoverinfo = 'skip'
+            ))
+    
     def _plot_3d_phase_portrait(self, params, initial_conditions, t, var_names):
         """Create 3D phase portrait"""
         fig = go.Figure()
@@ -232,7 +281,7 @@ class TrajectoryPlotter:
             )
 
             fig = go.Figure()
-            colors = ["#00E8FF", "#2F8DF7", "#5E91EE", "#8D66E6", "#BC3ADD", "#EB0FD5"]
+            colors = ["#14b5ff", "#38b000"]
 
             # Plot each variable
             for i, var_name in enumerate(var_names):

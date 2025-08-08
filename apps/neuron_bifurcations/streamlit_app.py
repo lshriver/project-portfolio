@@ -173,6 +173,11 @@ def main():
           t_max,
           num_points
         )
+        plotter._add_nullclines_2d(
+          fig_phase,
+          params,
+          var_names
+        )
         st.plotly_chart(fig_phase, use_container_width=True)
 
     with col2:

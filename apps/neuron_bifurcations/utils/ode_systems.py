@@ -38,7 +38,7 @@ class NeuronModel:
         - FitzHugh-Nagumo model is a simplified version of the HH model. 
         - Variables:
             - $V$ denotes the membrane potential
-            - $W$ denotes denotes the recovery variable
+            - $W$ denotes the recovery variable
         - Setting $a=b=0$ gives the van der Pol oscillator.
         - Shows excitable dynamics and can exhibit spiking behavior.
         """
@@ -319,3 +319,35 @@ class NeuronModel:
             return []
         else:
             return []   # Most neruon models require numerical methods for equlibria
+        
+    def get_nullclines(self, params, x_range, y_range, num=200):
+        """
+        Return a list of dicts describing each nullcline.
+        Each dict has keys:
+            'x'         : 1D array of x-values
+            'y'         : 1D array of y-values
+            'name'      : name of the nullcline (for legend)
+            'color'     : line color
+            'dash'      : dash style
+        """
+        import numpy as np
+
+        if self.model_type == 'fitzhugh_nagumo':
+            # Vdot = 0 => V - V^3/3 - W + RI = 0 => W = v - V^3/V + RI
+            # Wdot = 0 => (V + a - bW)/tau = 0 => W = (V + a)/b
+
+            a = params['a']
+            b = params['b']
+            I = params['I']
+            R = 1.0
+            V = np.linspace(x_range[0], x_range[1], num)
+            W1 = V - V**3/3 + R*I
+            W2 = (V + a)/b
+
+            return [
+                {'x': V, 'y': W1, 'name': 'V nullcline', 'color': "#14b5ff", 'dash': 'dash'},
+                {'x': V, 'y': W2, 'name': 'W nullcline', 'color': "#38b000", 'dash': 'dot'}
+            ]
+        
+        # fallback: no analytic nullclines available
+        return []
