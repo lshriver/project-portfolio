@@ -12,6 +12,17 @@ from utils.bifurcation_analysis import BifurcationAnalyzer
 import importlib.util
 import sys, os
 
+# Configure page - Streamlit only
+st.set_page_config(
+  page_title = "Neuron Dynamics Visualizer",
+  page_icon = "static/images/favicon.png",
+  layout = "wide",
+  initial_sidebar_state="expanded"
+)
+
+
+
+# Configure page - my custuomizations
 parent_utils_path = os.path.abspath(
     os.path.join(os.path.dirname(__file__),
                  "..",          # up to apps/
@@ -34,13 +45,7 @@ colormaps_spec = importlib.util.spec_from_file_location("parent_utils_colormaps"
 parent_utils_colormaps = importlib.util.module_from_spec(colormaps_spec)
 colormaps_spec.loader.exec_module(parent_utils_colormaps)
 
-# Configure page
-st.set_page_config(
-  page_title = "Neuron Dynamics Visualizer",
-  page_icon = "static/images/favicon.png",
-  layout = "wide",
-  initial_sidebar_state="expanded"
-)
+
 
 # Initialize session state
 if 'selected_model' not in st.session_state:

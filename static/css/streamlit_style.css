@@ -8,6 +8,18 @@
     background-attachment: fixed;
 }
 
+/* Add semi-transparent overlay for better content visibility */
+.main::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: -1;
+}
+
 .stTabs [data-baseweb="tab-list"] {
     gap: 10px;
 }
@@ -26,19 +38,26 @@
     color: whitesmoke !important;
 }
 
-/* Sidebar customization */
-.css-1d39kg, .css-1lcbmhc {
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to right, #00ffee, #27aaff);
 }
 
 /* Sidebar scrollbar styling */
 .sidebar::-webkit-scrollbar-thumb {
-    background: var(--gradient-light-to-dark-blue);
+    background: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0.2);
 }
-
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to right, #00ffee, #27aaff);
 }

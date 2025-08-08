@@ -425,3 +425,19 @@ a:hover {
         height: auto;
     }
 }
+
+/* Make sure all scrollbars match the theme */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-image: var(--gradient_text2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}

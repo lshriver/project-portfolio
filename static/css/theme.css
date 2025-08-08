@@ -26,6 +26,16 @@
     background-clip: text;
 }
 
+.gradient_text4 {
+    font-weight: bold;
+    background: linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
+    background-image: -webkit-linear-gradient(to right bottom, #00e8ff, #14b5ff, #3a98ff, #0070eb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
 /* Heading styles */
 .section-title {
     color: #22f793;

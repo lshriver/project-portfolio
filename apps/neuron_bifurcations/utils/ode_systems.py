@@ -67,11 +67,14 @@ class NeuronModel:
         self.description = """
         - Simplified Hodgkin-Huxley mdoel with voltage $V$ and potassium gating variable $n$.
         - Classic model for action potential generation in neruons.
-        - Shows excitablity threshoold and spike generation.
+        - Demonstrates multiple excitabillity thresholds.
         """
         self.equations_latex = [
             r"\frac{dV}{dt} = \frac{1}{C}\Big[I_\text{ext} - \underbrace{g_{Na}hm_{\infty}^3(V)(V-E_{Na})}_{I_{Na_V}} - \underbrace{g_K n^4(V-E_K)}_{I_{K_V}} - \underbrace{g_L(V-E_L)}_{I_L} \Big]",
-            r"\frac{dn}{dt} = \frac{n_{\infty}(V) - n}{\tau_n (V)}"
+            r"\frac{dn}{dt} = \frac{n_{\infty}(V) - n}{\tau_n (V)} \Rightarrow \frac{dn}{dt}=\alpha_n(1-n)-\beta_nn",
+            r"\\",
+            r"\alpha_n=\frac{n_\infty(V)}{\tau_n(V)}, \quad \beta_n=\frac{1-n_\infty(V)}{\tau_n(V)}",
+            r""
         ]
 
     def setup_morris_lecar(self):
