@@ -47,8 +47,8 @@ class NeuronModel:
             r"\frac{dw}{dt} = \frac{1}{\tau}(v + a - bw)"
         ]
         self.nullclines_latex = [
-            r"\dot{x} = 0 \Rightarrow w_1 = v - \frac{v^3}{3} - \mathcal{J}"
-            r"\dot{y} = 0 \Rightarrow w_2 = \frac{v+a}{b}"
+            r"\dot{v} = 0 \Rightarrow w_1 = v - \frac{v^3}{3} - \mathcal{J}"
+            r"\dot{w} = 0 \Rightarrow w_2 = \frac{v+a}{b}"
         ]
 
     def setup_hodgkin_huxley(self):
@@ -347,8 +347,8 @@ class NeuronModel:
             w2 = (v + a)/b
 
             return [
-                {'x': v, 'y': w1, 'name': 'x nullcline', 'color': "#14b5ff", 'dash': 'dash'},
-                {'x': v, 'y': w2, 'name': 'y nullcline', 'color': "#38b000", 'dash': 'dot'}
+                {'x': v, 'y': w1, 'name': 'v nullcline', 'color': "#14b5ff", 'dash': 'dash'},
+                {'x': v, 'y': w2, 'name': 'w nullcline', 'color': "#38b000", 'dash': 'dot'}
             ]
         
         # fallback: no analytic nullclines available
