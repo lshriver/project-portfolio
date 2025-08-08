@@ -51,7 +51,7 @@ def main():
   st.markdown("<div class='feature-box'> \
                   <div class='feature-box-content'> \
                     <p class='gradient_text1'> \
-                      Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization \
+                      Interactive bifurcation analysis of neuronal signaling models with phase portraits and dynamics visualization. \
                     </p>  \
                   </div>  \
                 </div>", unsafe_allow_html=True)
