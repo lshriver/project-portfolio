@@ -28,8 +28,8 @@ class NeuronModel:
     def setup_fitzhugh_nagumo(self):
         """FitzHugh-Nagumo neruon model: Simplified Hodgkin-Huxley"""
         self.parameters = {
-            'a': (0.7, (0.1, 2.0), '$a$ - recovery variable'),
-            'b': (0.8, (0.1, 2.0), '$b$ - recovery variable'),
+            'a': (0.7, (0.0, 2.0), '$a$ - recovery variable'),
+            'b': (0.8, (0.0, 2.0), '$b$ - recovery variable'),
             'tau': (12.5, (1.0, 50.0), '$\\tau$ - recovery time constant'),
             'I': (0.5, (-2.0, 3.0), '$I$ - applied current')
         }
