@@ -36,12 +36,19 @@ class NeuronModel:
         self.variable_names = ['V', 'W']
         self.description = """
         - FitzHugh-Nagumo model is a simplified version of the HH model. 
-        - V denotes the membrane potential and W denotes denotes the recovery variable. 
+        - Variables:
+            - $V$ denotes the membrane potential
+            - $W$ denotes denotes the recovery variable
+        - Setting $a=b=0$ gives the van der Pol oscillator.
         - Shows excitable dynamics and can exhibit spiking behavior.
         """
         self.equations_latex = [
-            r"\frac{dV}{dt} = V - \frac{V^3}{3} - W + I",
+            r"\frac{dV}{dt} = V - \frac{V^3}{3} - W + RI_\text{ext}",
             r"\frac{dW}{dt} = \frac{1}{\tau}(V + a - bW)"
+        ]
+        self.nullclines_latex = [
+            r"\dot{V} = 0 \Rightarrow W = V - \frac{V^3}{3} - RI_\text{ext}"
+            r"\dot{W} = 0 \Rightarrow W = \frac{V+a}{b}"
         ]
 
     def setup_hodgkin_huxley(self):

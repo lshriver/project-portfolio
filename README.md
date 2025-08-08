@@ -8,8 +8,7 @@ A repository for my portfolio projects.
 ### Neuron Bifurcations App
 - [ ] General
     - Figure out if membrane potential threshold value (see plot on tab 3) is computed appropriately
-- [ ] Sidebar
-    - change parameter input type (scrollbar -> type it in)
+    - Plot nullclines on phase portraits
 - [ ] FitzHugh Nagumo Model
     - Check parameter ranges
     - Compare actual results to expected
