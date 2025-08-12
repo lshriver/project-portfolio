@@ -83,7 +83,7 @@ class BifurcationAnalyzer:
             marker = dict(
                 size = 6,
                 color = t,
-                colorscale = parent_utils_colormaps.BLUE,
+                colorscale = parent_utils_colormaps.BLUE_TO_PURPLE,
                 opacity = 0.7
             ),
             name = f'{var_names[0]} extrema',

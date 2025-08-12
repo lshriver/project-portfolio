@@ -1,16 +1,16 @@
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import plotly.express as px
+#import plotly.express as px
 from scipy.integrate import odeint
-import io
-import base64
+#import io
+#import base64
 from utils.ode_systems import NeuronModel
 from utils.visualization import PhasePortraitPlotter, TrajectoryPlotter
 from utils.bifurcation_analysis import BifurcationAnalyzer
 import importlib.util
-import sys, os
+import os
 
 # Configure page - Streamlit only
 st.set_page_config(
@@ -95,7 +95,7 @@ def main():
     with st.expander("Parameters"):
       params = {}
       for param_name, (default_val, param_range, description) in neuron_model.get_parameters().items():
-        params[param_name] = st.slider(
+        params[param_name] = st.number_input(
           rf"{description}",
           min_value=param_range[0],
           max_value=param_range[1],
@@ -197,7 +197,7 @@ def main():
       st.plotly_chart(fig_time, use_container_width=True)
 
     # Show neural activity data
-    if st.checkbox("Show nerual activity data"):
+    if st.checkbox("Show neural activity data"):
       t = np.linspace(0, t_max, num_points)
       for i, ic in enumerate(initial_conditions[:3]):  # Limit to 3 for display
         sol = odeint(lambda y, t: neuron_model.equations(y, t, params), ic, t)
@@ -285,7 +285,7 @@ def main():
 #          elif selected_key == 'wilson_cowan':
 #            st.write("Population dynamics can show multistability and osicllations.")
           else:
-            st.write("Bifurcation diagram shows paramete regimes with different dynamical behaviors.")
+            st.write("Bifurcation diagram shows parameter regimes with different dynamical behaviors.")
 
     # Neural excitability analysis
     st.markdown("<h2 class='gradient_text1'>Excitability Analysis</h2>", unsafe_allow_html=True)
@@ -466,6 +466,10 @@ def main():
       st.write("**Key Features:** Simplified neuron model showing excitability and oscillations")
     elif selected_key == 'hodgkin_huxley':
       st.write("**Variables:** $V$ = membrane potential (mV), $n$ = potassium ion channel activation")
+      #st.markdown("""
+      #            **Parameters**: 
+      #            - $g_{Na}=$ sodium ion conductance ($\mathrm{mS/cm^2}$)  
+      #            """)
       st.write("**Key Features:** Classical model for action potential generation")
     elif selected_key == 'morris_lecar':
       st.write("**Variables:** $V$ = membrane potential (mV), $W$ = potassium ion channel activation")

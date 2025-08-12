@@ -1,8 +1,9 @@
 import numpy as np
 import plotly.graph_objects as go
-import plotly.express as px
+#import plotly.express as px
+from plotly.subplots import make_subplots
 from scipy.integrate import odeint
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import importlib.util
 import os
 
@@ -146,7 +147,7 @@ class PhasePortraitPlotter:
                 name = n['name'],
                 line = dict(color=n['color'],
                             dash=n['dash'],
-                            width=2),
+                            width=3),
                 showlegend = True,
                 hoverinfo = 'skip'
             ))
@@ -207,11 +208,10 @@ class PhasePortraitPlotter:
     def _add_vector_field_2d(self, fig, params, var_names):
         """Add vector field to 2D phase portrait"""
 
-        # Create grid for vector field
-        x_range = [-3, 3]
-        y_range = [-3, 3]
+        # Define default range if no data is present    
+        x_range = y_range = [-3, 3]
 
-        # Try to get better bounds from current traces
+        # Check if there are any existing traces to adjust the range
         if fig.data:
             all_x = []
             all_y = []
@@ -228,8 +228,9 @@ class PhasePortraitPlotter:
                 y_range = [y_min - 0.5, y_max + 0.5]
 
         # Create grid
-        x_grid = np.linspace(x_range[0], x_range[1], 15)
-        y_grid = np.linspace(y_range[0], y_range[1], 15)
+        num_points = 25
+        x_grid = np.linspace(x_range[0], x_range[1], num_points)
+        y_grid = np.linspace(y_range[0], y_range[1], num_points)
         X, Y = np.meshgrid(x_grid, y_grid)
 
         # Calculate vector field
@@ -243,7 +244,7 @@ class PhasePortraitPlotter:
                     derivatives = self.neuron_model.equations(state, 0, params)
                     DX[i, j] = derivatives[0]
                     DY[i, j] = derivatives[1]
-                except:
+                except Exception:
                     DX[i, j] = 0
                     DY[i, j] = 0
 
@@ -253,18 +254,35 @@ class PhasePortraitPlotter:
         DX_norm = DX / M
         DY_norm = DY / M
 
-        # Add vector field as sccatter plot with arrows
-        scale = 0.1
+        # Add vector field as scatter plot with arrows
+        scale = 0.5 * max(x_range[1] - x_range[0], y_range[1] - y_range[0]) / num_points
         for i in range(0, len(x_grid), 2):      # skip some for clarity
             for j in range(0, len(y_grid), 2):
                 fig.add_trace(go.Scatter(
                     x=[X[j, i], X[j, i] + scale * DX_norm[j, i]],
                     y=[Y[j, i], Y[j, i] + scale * DY_norm[j, i]],
                     mode='lines',
-                    line=dict(color='whitesmoke', width=1),
+                    line=dict(color='grey', width=1),
                     showlegend=False,
                     hoverinfo='skip'
                 ))
+            
+                fig.add_annotation(
+                    x=X[j, i] + scale * DX_norm[j, i],
+                    y=Y[j, i] + scale * DY_norm[j, i],
+                    ax=X[j, i],
+                    ay=Y[j, i],
+                    xref='x',
+                    yref='y',
+                    axref='x',
+                    ayref='y',
+                    showarrow=True,
+                    arrowhead=2,
+                    arrowsize=1,
+                    arrowwidth=1,
+                    arrowcolor='grey'
+                )
+
     
 class TrajectoryPlotter:
     """Handles neural time series trajectory plotting"""
@@ -273,44 +291,74 @@ class TrajectoryPlotter:
         self.neuron_model = neuron_model
     
     def plot_time_series(self, params, initial_condition, t_max, num_points):
-        """"Create time series plot of variables"""
+        """Create time series plot of variables"""
         t = np.linspace(0, t_max, num_points)
         var_names = self.neuron_model.get_variable_names()
 
-        try: 
+        try:
             sol = odeint(
                 lambda y, t: self.neuron_model.equations(y, t, params),
                 initial_condition, t
             )
 
-            fig = go.Figure()
-            colors = ["#14b5ff", "#38b000"]
+            # Check for Hodgkin-Huxley model variables
+            if {'V', 'n'}.issubset(var_names):
+                # Create subplots
+                fig = make_subplots(rows=2, cols=1, shared_xaxes=False, vertical_spacing=0.1)
+                colors = ["#14b5ff", "#38b000"]
 
-            # Plot each variable
-            for i, var_name in enumerate(var_names):
+                # Plot V
                 fig.add_trace(go.Scatter(
                     x=t,
-                    y=sol[:, i],
+                    y=sol[:, var_names.index('V')],
                     mode='lines',
-                    name=var_name,
-                    line=dict(color=colors[i % len(colors)], width=2)
-                ))
+                    name='V',
+                    line=dict(color=colors[0], width=2)
+                ), row=1, col=1)
 
+                # Plot n
+                fig.add_trace(go.Scatter(
+                    x=t,
+                    y=sol[:, var_names.index('n')],
+                    mode='lines',
+                    name='n',
+                    line=dict(color=colors[1], width=2)
+                ), row=2, col=1)
+
+                # Update subplots' titles
+                fig.update_yaxes(title_text="V", row=1, col=1)
+                fig.update_yaxes(title_text="n", row=2, col=1)
+
+                # Update x-axis for the lower subplot
+                fig.update_xaxes(title_text="Time", row=2, col=1)
+
+            else:
+                # Single plot with curves for other variables
+                fig = go.Figure()
+                colors = ["#14b5ff", "#38b000"]
+
+                for i, var_name in enumerate(var_names):
+                    fig.add_trace(go.Scatter(
+                        x=t,
+                        y=sol[:, i],
+                        mode='lines',
+                        name=var_name,
+                        line=dict(color=colors[i % len(colors)], width=2)
+                    ))
+
+            # Update layout
             fig.update_layout(
                 title="Time Series",
                 xaxis_title="Time",
-                yaxis_title="Value",
                 hovermode='x unified',
-                width=600,
-                height=500,
+                height=500 if not {'V', 'n'}.issubset(var_names) else 700,
                 paper_bgcolor='rgba(0, 0, 0, 0.5)',
-                plot_bgcolor = 'rgba(0, 0, 0, 0.5)',
+                plot_bgcolor='rgba(0, 0, 0, 0.5)',
                 margin=dict(l=40, r=40, t=40, b=40)
             )
             return fig
         
         except Exception as e:
-            # Return empty figure with error message
             fig = go.Figure()
             fig.add_annotation(
                 text=f"Error computing trajectory: {str(e)}",

@@ -60,14 +60,38 @@ class NeuronModel:
             'E_Na': (55.0, (40.0, 60.0), '$E_{Na} \ \mathrm{(mV)}$ Sodium reversal potential'),
             'E_K': (-77.0, (-90.0, -60.0), '$E_{K} \ \mathrm{(mV)}$ Potassium reversal potential'),
             'E_L': (-65.0, (-70.0, -40.0), '$E_{L} \ \mathrm{(mV)}$ Leak reversal potential'),
-            'I': (10.0, (-50.0, 250.0), '$I_\text{ext} \ \mathrm{(\mu A/cm^2)}$ - Applied current'),
+            'I': (10.0, (-50.0, 400.0), '$I_{\text{ext}} \ \mathrm{(\mu A/cm^2)}$ - Applied current'),
             'C': (1.0, (0.5, 2.0), '$C \ \mathrm{(\mu F/cm^2)}$ - Membrane capacitance')
         }
         self.variable_names = ['V', 'n']
-        self.description = """
-        - Simplified Hodgkin-Huxley mdoel with voltage $V$ and potassium gating variable $n$.
-        - Classic model for action potential generation in neruons.
-        - Demonstrates multiple excitabillity thresholds.
+        self.description = r"""
+        - The above equations give our simplified Hodgkin-Huxley model.
+        - In particular, our analysis of the HH model invovles hows the membrane potential $V$ and the potassium gating variable $n$ change over time.
+        - Additional parameters:
+            - Sodium channel activation
+                $$ 
+                    \alpha_m = \frac{(0.1)(V+40)}{1-e^{-\frac{V + 40}{10}}} 
+                $$
+
+                $$
+                    \beta_m = (4)e^{-\frac{V+65}{18}}
+                $$
+
+                $$
+                    m_\infty = \frac{\alpha_m}{\alpha_m + \beta_m}
+                $$
+            - Sodium channel inactivation
+                $$
+                    h \approx 0.8 - n
+                $$
+            - Potassium channel activation
+                $$
+                    \alpha_n = \frac{(0.01)(V+55)}{1-e^{-\frac{V+55}{10}}}
+                $$
+
+                $$
+                    \beta_n = (0.125)e^{-\frac{V+65}{80}}
+                $$
         """
         self.equations_latex = [
             r"\frac{dV}{dt} = \frac{1}{C}\Big[I_\text{ext} - \underbrace{g_{Na}hm_{\infty}^3(V)(V-E_{Na})}_{I_{Na_V}} - \underbrace{g_K n^4(V-E_K)}_{I_{K_V}} - \underbrace{g_L(V-E_L)}_{I_L} \Big]",
