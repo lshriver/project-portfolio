@@ -495,7 +495,7 @@ def main():
           #st.write(f"Equilibrium {i+1}: {point}")
       #else:
         #st.write("Equilibrium points require numerical computation for this model.")
-
+        
   parent_utils_style.load_footer()
 
 if __name__ == "__main__":
