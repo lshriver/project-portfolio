@@ -14,7 +14,7 @@ import os
 
 # Configure page - Streamlit only
 st.set_page_config(
-  page_title = "Neuron Dynamics Visualizer",
+  page_title = "Nonlinear Dynamics with Neurons",
   page_icon = "static/images/favicon.png",
   layout = "wide",
   initial_sidebar_state="expanded"
@@ -71,7 +71,7 @@ def main():
     # Model selection
     model_options = {
       'fitzhugh_nagumo': 'FitzHugh-Nagumo',
-      'hodgkin_huxley': 'Hodgkin-Huxley (simplified)',
+#      'hodgkin_huxley': 'Hodgkin-Huxley (simplified)',
       'morris_lecar': 'Morris-Lecar',
 #      'izhikevich': 'Izhikevich',
 #      'wilson_cowan': 'Wilson-Cowan',
@@ -123,8 +123,8 @@ def main():
     # Set reasonable default ranges based on neuron model
     if selected_key == 'fitzhugh_nagumo':
       default_range = [(-3.0, 3.0), (-3.0, 3.0)]
-    elif selected_key == 'hodgkin_huxley':
-      default_range = [(-80.0, 20.0), (0.0, 1.0)]
+#    elif selected_key == 'hodgkin_huxley':
+#      default_range = [(-80.0, 20.0), (0.0, 1.0)]
     elif selected_key == 'morris_lecar':
       default_range = [(-80.0, 40.0), (0.0, 1.0)]
 #    elif selected_key == 'izhikevich':
@@ -164,7 +164,7 @@ def main():
   tab1, tab2, tab3, tab4 = st.tabs(["Phase Portrait", "Bifurcation Analysis", "Spike Analysis", "Model Info"])
 
   with tab1:
-    st.markdown("<h2 class='gradient_text2'>Phase Portrait & Neural Dynamics</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='gradient_text1'>Phase Portrait & Temporal Simulation</h2>", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -226,7 +226,7 @@ def main():
       )
 
   with tab2:
-    st.markdown("<h2 class='gradient_text2'>Neural Bifurcation Analysis</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 class='gradient_text1'>Neural Bifurcation Analysis</h2>", unsafe_allow_html=True)
     st.markdown("<div class='feature-box'> \
                   <div class='feature-box-content'> \
                     <p class='gradient_text1'> \
@@ -276,8 +276,8 @@ def main():
           st.markdown("<h4 class='gradient_text1'>Interpretation</h4>", unsafe_allow_html=True)
           if selected_key == 'fitzhugh_nagumo':
             st.write("Look for trasitions between excitable (single stable point) and oscilaltory (limit cycle) regimes.")
-          elif selected_key == 'hodgkin_huxley':
-            st.write("Observe threshold behavior and transitions to repetitive spiking.")
+#          elif selected_key == 'hodgkin_huxley':
+#            st.write("Observe threshold behavior and transitions to repetitive spiking.")
           elif selected_key == 'morris_lecar':
             st.write("Morris-Lecar shows rich bifurcation structure including saddle-node and Hopf bifurcations.")
 #          elif selected_key =='izhikevich':
@@ -449,7 +449,7 @@ def main():
     st.markdown("<h2 class='gradient_text1'>Neural Model Informaiton</h2>", unsafe_allow_html=True)
 
     # Display model equations
-    st.markdown("<h3 class='gradient_text2'>Current Parameters</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 class='gradient_text1'>Current Parameters</h3>", unsafe_allow_html=True)
     equations_latex = neuron_model.get_equations_latex()
     for eq in equations_latex:
       st.latex(eq)
@@ -460,17 +460,19 @@ def main():
     st.write(description)
 
     # Neural model specific information
-    st.markdown("<h3 class='gradient_text1'>Neurobiological Context</h3>", unsafe_allow_html=True)
     if selected_key == 'fitzhugh_nagumo':
       st.write("**Variables:** $V$ = membrane potential, $W$=recovery variable")
       st.write("**Key Features:** Simplified neuron model showing excitability and oscillations")
-    elif selected_key == 'hodgkin_huxley':
-      st.write("**Variables:** $V$ = membrane potential (mV), $n$ = potassium ion channel activation")
-      #st.markdown("""
-      #            **Parameters**: 
-      #            - $g_{Na}=$ sodium ion conductance ($\mathrm{mS/cm^2}$)  
-      #            """)
-      st.write("**Key Features:** Classical model for action potential generation")
+#    elif selected_key == 'hodgkin_huxley':
+#      st.write(r"""
+#                **Variables** 
+#                  - $V$ = membrane potential (mV)
+#                  - $n\in [0,1]$ = potassium ion channel activation (unitless)
+#               """)
+#      
+#      st.write("""
+#                **Key Features:** The famous model for action potential generation at the axon hillock of a squid giant axon.
+#               """)
     elif selected_key == 'morris_lecar':
       st.write("**Variables:** $V$ = membrane potential (mV), $W$ = potassium ion channel activation")
       st.write("**Key Features:** calcium ion and potassium ion channel dynamics, rich bifiurcation structure")
@@ -485,14 +487,14 @@ def main():
 #      st.write("**Key Features:** Spike-frequency adaptation and realistic firing patterns")
 
     # Equilibrium points (if available)
-    if hasattr(neuron_model, 'get_equilibrium_points'):
-      st.markdown("<h2 class='gradient_text1'>Equilibrium Points</h2>", unsafe_allow_html=True)
-      eq_points = neuron_model.get_equilibrium_points(params)
-      if eq_points:
-        for i, point in enumerate(eq_points):
-          st.write(f"Equilibrium {i+1}: {point}")
-      else:
-        st.write("Equilibrium points require numerical computation for this model.")
+    #if hasattr(neuron_model, 'get_equilibrium_points'):
+      #st.markdown("<h2 class='gradient_text1'>Equilibrium Points</h2>", unsafe_allow_html=True)
+      #eq_points = neuron_model.get_equilibrium_points(params)
+      #if eq_points:
+        #for i, point in enumerate(eq_points):
+          #st.write(f"Equilibrium {i+1}: {point}")
+      #else:
+        #st.write("Equilibrium points require numerical computation for this model.")
 
   parent_utils_style.load_footer()
 
